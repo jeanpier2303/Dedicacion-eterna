@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Libretas artesanales personalizadas - Sueños de Papiro. Crea tu libreta única con dedicación eterna.">
+    <meta name="keywords" content="libretas artesanales, cuadernos personalizados, Sueños de Papiro, dedicación eterna, libretas exclusivas">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Sueños de Papiro - Libretas Artesanales Personalizadas">
+    <meta property="og:description" content="Descubre nuestra colección de libretas artesanales con dedicación eterna.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:url" content="https://sueñosdepapiro.com">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Colores CSS personalizados -->
+    <style>
+        :root {
+            --surface-rgb: 255, 255, 255;
+        }
+        
+        [data-theme="dark"] {
+            --surface-rgb: 26, 15, 10;
+        }
+    </style>
+    
+    <title>Sueños de Papiro | Libretas Artesanales Personalizadas</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="css/book-viewer.css">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="asset/images/LOGObIEN.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+</head>
+<body>
+    <!-- Reemplazar el contenido del preloader existente con: -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-container">
+            <div class="notebook-preloader">
+                <!-- Tapa de la libreta -->
+                <div class="notebook-cover">
+                    <div class="notebook-spine"></div>
+                    <div class="cover-content">
+                        <img src="asset/images/LOGObIEN.png" alt="Sueños de Papiro Logo" class="logo-image">
+                    </div>
+                </div>
+                
+                <!-- Páginas de la libreta -->
+                <div class="notebook-pages">
+                    <div class="page page-1"></div>
+                    <div class="page page-2"></div>
+                    <div class="page page-3"></div>
+                    <div class="page page-4"></div>
+                    <div class="page page-5"></div>
+                </div>
+                
+                <!-- Contratapa de la libreta -->
+                <div class="notebook-back"></div>
+            </div>
+            
+            <div class="preloader-text">
+                <div class="loading-message">
+                    <span class="typing-text" id="typing-text">Preparando tu libreta personal...</span>
+                    <span class="typing-cursor">|</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">
+                <div class="logo-container">
+                    <div class="logo-image-container">
+                        <img src="asset/images/LOGObIEN.png" alt="Sueños de Papiro Logo" class="logo-image">
+                    </div>
+                </div>
+            </a>
+            
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="#inicio" class="nav__link active">
+                            <i class="fas fa-home nav-icon"></i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#coleccion" class="nav__link">
+                            <i class="fas fa-book nav-icon"></i>
+                            <span>Colección</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#galeria" class="nav__link">
+                            <i class="fas fa-images nav-icon"></i>
+                            <span>Galería</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#editoriales" class="nav__link">
+                            <i class="fas fa-building nav-icon"></i>
+                            <span>Editoriales</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#testimonios" class="nav__link">
+                            <i class="fas fa-comment nav-icon"></i>
+                            <span>Testimonios</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#contacto" class="nav__link">
+                            <i class="fas fa-envelope nav-icon"></i>
+                            <span>Contacto</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav__actions">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
+                        <i class="fas fa-moon moon-icon"></i>
+                        <i class="fas fa-sun sun-icon hidden"></i>
+                    </button>
+                    
+                    <div class="nav__close" id="nav-close">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav__right">
+                <button class="theme-toggle mobile-theme" id="mobile-theme-toggle" aria-label="Cambiar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="nav__toggle" id="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" class="main">
+        <!-- Hero Section -->
+        <section class="hero" id="inicio">
+            <div class="hero-background">
+                <div class="hero-bg-pattern"></div>
+                <div class="hero-floating-elements">
+                    <div class="floating-notebook floating-notebook-1" data-speed="0.5"></div>
+                    <div class="floating-notebook floating-notebook-2" data-speed="0.7"></div>
+                    <div class="floating-notebook floating-notebook-3" data-speed="0.3"></div>
+                </div>
+            </div>
+            
+            <div class="hero-content container">
+                <div class="hero-text" data-aos="fade-up" data-aos-delay="200">
+                    <div class="hero-badge">
+                        <span>✦ Edición Limitada ✦</span>
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="title-line title-line-1">Tu Historia</span>
+                        <span class="title-line title-line-2 highlight">Eterna</span>
+                        <span class="title-line title-line-3">en Cada Página</span>
+                    </h1>
+                    <p class="hero-description">
+                        Crea libretas únicas que guardan tus pensamientos, sueños y recuerdos más preciados. 
+                        Cada libreta es una obra de arte personalizada con amor y dedicación.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#coleccion" class="button button-primary button-lg hero-button">
+                            <span>Crear Mi Libreta</span>
+                            <i class="fas fa-arrow-right button-icon"></i>
+                        </a>
+                        <a href="#galeria" class="button button-outline button-lg hero-button">
+                            <i class="fas fa-play-circle button-icon"></i>
+                            <span>Ver Proceso</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual" data-aos="fade-left" data-aos-delay="400">
+                    <div class="hero-notebook-display">
+                        <div class="notebook-3d">
+                            <div class="notebook-cover-3d">
+                                <div class="notebook-spine-3d"></div>
+                                 <img src="asset/images/principal1.png" alt="Sueños de Papiro Logo" class="notebook-logo-3d">
+                            </div>
+                            <div class="notebook-pages-3d">
+                                <div class="page page-1"></div>
+                                <div class="page page-2"></div>
+                                <div class="page page-3"></div>
+                                <div class="page page-4"></div>
+                            </div>
+                            <div class="notebook-shadow"></div>
+                        </div>
+                        <div class="notebook-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Redes Sociales - Carrusel de Logos -->
+        <section class="companies-section section" id="redes-sociales" data-aos="fade-up">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">Síguenos</div>
+                    <h2 class="section-title">Nuestras Redes Sociales</h2>
+                    <p class="section-subtitle">
+                        Conéctate con nosotros en tus plataformas favoritas
+                    </p>
+                </div>
+
+                <div class="marquee-container">
+                    <div class="marquee-track">
+                        <div class="marquee-content">
+
+                            <!-- Primer grupo -->
+                            <div class="marquee-inner">
+
+                                <a href="https://www.tiktok.com" target="_blank" rel="noopener" class="logo-item tiktok" aria-label="TikTok">
+                                    <i class="fa-brands fa-tiktok"></i>
+                                    <span class="logo-name">TikTok</span>
+                                </a>
+
+                                <a href="https://www.facebook.com" target="_blank" rel="noopener" class="logo-item facebook" aria-label="Facebook">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                    <span class="logo-name">Facebook</span>
+                                </a>
+
+                                <a href="https://x.com" target="_blank" rel="noopener" class="logo-item x" aria-label="X">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                    <span class="logo-name">X</span>
+                                </a>
+
+                                <a href="https://www.instagram.com" target="_blank" rel="noopener" class="logo-item instagram" aria-label="Instagram">
+                                    <i class="fa-brands fa-instagram"></i>
+                                    <span class="logo-name">Instagram</span>
+                                </a>
+
+                                <a href="https://www.pinterest.com" target="_blank" rel="noopener" class="logo-item pinterest" aria-label="Pinterest">
+                                    <i class="fa-brands fa-pinterest-p"></i>
+                                    <span class="logo-name">Pinterest</span>
+                                </a>
+
+                            </div>
+
+                            <!-- Segundo grupo duplicado -->
+                            <div class="marquee-inner" aria-hidden="true">
+                                <a href="https://www.tiktok.com" target="_blank" rel="noopener" class="logo-item tiktok">
+                                    <i class="fa-brands fa-tiktok"></i>
+                                    <span class="logo-name">TikTok</span>
+                                </a>
+                                <a href="https://www.facebook.com" target="_blank" rel="noopener" class="logo-item facebook">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                    <span class="logo-name">Facebook</span>
+                                </a>
+                                <a href="https://x.com" target="_blank" rel="noopener" class="logo-item x">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                    <span class="logo-name">X</span>
+                                </a>
+                                <a href="https://www.instagram.com" target="_blank" rel="noopener" class="logo-item instagram">
+                                    <i class="fa-brands fa-instagram"></i>
+                                    <span class="logo-name">Instagram</span>
+                                </a>
+                                
+                                <a href="https://www.pinterest.com" target="_blank" rel="noopener" class="logo-item pinterest">
+                                    <i class="fa-brands fa-pinterest-p"></i>
+                                    <span class="logo-name">Pinterest</span>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="marquee-overlay left"></div>
+                    <div class="marquee-overlay right"></div>
+                </div>
+
+                <div class="companies-cta">
+                    <p class="companies-description">
+                        Descubre contenido exclusivo y novedades en cada red
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Colección de Libretas -->
+        <section class="libros-section section" id="coleccion">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <div class="section-badge">Colección</div>
+                    <h2 class="section-title">Nuestras Libretas Exclusivas</h2>
+                    <p class="section-subtitle">
+                        Personaliza tu libreta ideal con diferentes estilos y materiales
+                    </p>
+                </div>
+                
+                <div class="libros-grid" id="libros-grid">
+                    <!-- Las libretas se cargan dinámicamente -->
+                </div>
+
+                <!-- Botón Ver Más -->
+                <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="300">
+                    <button class="button button-outline button-lg" id="ver-mas-libretas">
+                        <span>Ver Más Libretas</span>
+                        <i class="fas fa-arrow-down button-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Galería Interactiva -->
+        <section class="gallery-section section" id="galeria">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <div class="section-badge">Galería</div>
+                    <h2 class="section-title">Detalles que Inspiran</h2>
+                    <p class="section-subtitle">
+                        Explora cada detalle de nuestras libretas artesanales
+                    </p>
+                </div>
+                
+                <div class="gallery-filters" data-aos="fade-up" data-aos-delay="100">
+                    <button class="filter-btn active" data-filter="all">Todo</button>
+                    <button class="filter-btn" data-filter="covers">Portadas</button>
+                    <button class="filter-btn" data-filter="interior">Interiores</button>
+                    <button class="filter-btn" data-filter="details">Detalles</button>
+                </div>
+                
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Las imágenes se cargan dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios -->
+        <section class="testimonials-section section" id="testimonios">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <div class="section-badge">Testimonios</div>
+                    <h2 class="section-title">Lo que Dicen Nuestros Clientes</h2>
+                    <p class="section-subtitle">
+                        Experiencias reales de quienes han creado sus libretas con nosotros
+                    </p>
+                </div>
+                
+                <div class="testimonials-container" id="testimonials-container">
+                    <!-- Los testimonios se cargan dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Comunidad WhatsApp -->
+        <section class="newsletter-section section" data-aos="fade-up">
+            <div class="container">
+                <div class="newsletter-card">
+                    <div class="newsletter-content">
+                        <div class="newsletter-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h2>Únete a Nuestra Comunidad</h2>
+                        <p>
+                            Conéctate con otros amantes de las libretas artesanales, comparte tus ideas, 
+                            recibe consejos y sé el primero en conocer nuestras nuevas colecciones.
+                        </p>
+                        <a href="https://api.whatsapp.com/message/GTUT6QTKTZ45K1?autoload=1&app_absent=0" 
+                           class="button button-primary button-lg" 
+                           target="_blank" rel="noopener">
+                            <i class="fab fa-whatsapp button-icon"></i>
+                            <span>Unirse al Grupo de WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="contacto">
+        <div class="footer-main">
+            <div class="container">
+                <div class="footer-grid">
+                    <!-- Columna 1: Logo y Descripción -->
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <h3 class="logo-text">Sueños de Papiro</h3>
+                            <span class="logo-subtext">Dedicación Eterna</span>
+                        </div>
+                        <p class="footer-description">
+                            Creamos libretas que trascienden el tiempo. Cada obra es una pieza única de arte personal, 
+                            elaborada con pasión y atención meticulosa a cada detalle.
+                        </p>
+                        <div class="footer-social">
+                            <a href="https://facebook.com" class="social-link" target="_blank" rel="noopener" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.tiktok.com/@dedieterna?is_from_webapp=1&sender_device=pc" class="social-link" target="_blank" rel="noopener" title="TikTok">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Columna 2: Contacto -->
+                    <div class="footer-col">
+                        <h4 class="footer-title">Contacto</h4>
+                        <div class="footer-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <strong>Email</strong>
+                                    <p>contacto@sueñosdepapiro.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <strong>Teléfono</strong>
+                                    <p>+52 55 1234 5678</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <div>
+                                    <strong>WhatsApp</strong>
+                                    <p>+52 55 1234 5678</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p class="copyright">
+                        &copy; 2024 <strong>Sueños de Papiro</strong> - Dedicación Eterna. Todos los derechos reservados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para Más Libretas -->
+    <div class="modal-overlay" id="libretas-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Nuestra Colección Completa</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-grid" id="modal-grid">
+                    <!-- Libretas adicionales se cargarán aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones Flotantes -->
+    <div class="floating-buttons">
+        <a href="https://wa.me/5215512345678?text=Hola,%20me%20interesan%20sus%20libretas%20personalizadas" 
+           class="floating-button whatsapp-button" 
+           target="_blank" rel="noopener"
+           data-tooltip="¿Necesitas ayuda?"
+           title="Chatea con nosotros por WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+
+        <button class="floating-button back-to-top" id="back-to-top" data-tooltip="Volver arriba" title="Volver arriba">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        // Inicializar AOS después del preloader
+        document.addEventListener('preloaderComplete', function() {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 800,
+                    once: true,
+                    mirror: false,
+                    offset: 100
+                });
+                console.log('AOS inicializado después del preloader');
+            }
+        });
+
+        // Fallback para AOS si el preloader no dispara el evento
+        setTimeout(function() {
+            if (typeof AOS !== 'undefined' && !window.aosInitialized) {
+                AOS.init({
+                    duration: 800,
+                    once: true,
+                    mirror: false,
+                    offset: 100
+                });
+                window.aosInitialized = true;
+                console.log('AOS inicializado por timeout de seguridad');
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

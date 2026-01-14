@@ -1,0 +1,310 @@
+/* ===== VARIABLES CSS MEJORADAS ===== */
+
+:root {
+    /* ===== COLORES PRINCIPALES MEJORADOS ===== */
+    --color-primary: #8B4513;           /* Marrón libro principal */
+    --color-primary-light: #A0522D;     /* Marrón claro */
+    --color-primary-dark: #5D2906;      /* Marrón oscuro */
+    --color-primary-rgb: 139, 69, 19;   /* RGB para efectos */
+    
+    --color-secondary: #D4A76A;         /* Dorado vintage */
+    --color-secondary-light: #E6C9A0;   /* Dorado claro */
+    --color-secondary-dark: #B89446;    /* Dorado oscuro */
+    --color-secondary-rgb: 212, 167, 106; /* RGB para efectos */
+    
+    --color-accent: #5D4037;           /* Marrón acento */
+    --color-accent-light: #8D6E63;     /* Marrón acento claro */
+    --color-accent-dark: #3E2723;      /* Marrón acento oscuro */
+    --color-accent-rgb: 93, 64, 55;    /* RGB para efectos */
+    
+    /* ===== COLORES NEUTROS MEJORADOS ===== */
+    --color-light: #F9F6F0;            /* Fondo crema claro */
+    --color-lighter: #FFFEFB;          /* Fondo casi blanco */
+    --color-dark: #2C1810;             /* Texto principal */
+    --color-darker: #1A0F0A;           /* Texto oscuro */
+    
+    /* ===== COLORES DE SUPERFICIE MEJORADOS ===== */
+    --color-surface: #FFFFFF;          /* Superficie clara */
+    --color-surface-variant: #F5F1E8;  /* Superficie variante */
+    --color-surface-elevated: #FFFFFF; /* Superficie elevada */
+    --surface-rgb: 255, 255, 255;      /* RGB para efectos */
+    
+    /* ===== COLORES DE TEXTO MEJORADOS ===== */
+    --color-text-primary: #2C1810;     /* Texto principal */
+    --color-text-secondary: #5A4B3A;   /* Texto secundario */
+    --color-text-tertiary: #8A7F6F;    /* Texto terciario */
+    --color-text-on-primary: #FFFFFF;  /* Texto sobre fondo primario */
+    --color-text-on-secondary: #2C1810;/* Texto sobre fondo secundario */
+    
+    /* Colores para modo oscuro */
+    --color-text-primary-dark: #F5F1E8;
+    --color-text-secondary-dark: #D4C9B8;
+    
+    /* ===== COLORES DE ESTADO MEJORADOS ===== */
+    --color-success: #4CAF50;          /* Éxito */
+    --color-success-light: #81C784;    /* Éxito claro */
+    --color-success-dark: #388E3C;     /* Éxito oscuro */
+    
+    --color-warning: #FF9800;          /* Advertencia */
+    --color-warning-light: #FFB74D;    /* Advertencia claro */
+    --color-warning-dark: #F57C00;     /* Advertencia oscuro */
+    
+    --color-error: #F44336;            /* Error */
+    --color-error-light: #E57373;      /* Error claro */
+    --color-error-dark: #D32F2F;       /* Error oscuro */
+    
+    --color-info: #2196F3;             /* Información */
+    --color-info-light: #64B5F6;       /* Información claro */
+    --color-info-dark: #1976D2;        /* Información oscuro */
+    
+    /* ===== COLORES DE BORDES MEJORADOS ===== */
+    --color-border: #E8E2D6;           /* Borde claro */
+    --color-border-variant: #D4C9B8;   /* Borde variante */
+    --color-divider: #EDE8DF;          /* Divisor */
+    --color-border-dark: #3E2723;      /* Borde modo oscuro */
+    
+    /* ===== COLORES DE SOMBRAS MEJORADOS ===== */
+    --color-shadow: rgba(44, 24, 16, 0.08);
+    --color-shadow-strong: rgba(44, 24, 16, 0.15);
+    --color-shadow-stronger: rgba(44, 24, 16, 0.25);
+    --color-shadow-dark: rgba(0, 0, 0, 0.3);
+    
+    /* ===== GRADIENTES MEJORADOS ===== */
+    --gradient-primary: linear-gradient(135deg, 
+        var(--color-primary), 
+        var(--color-primary-dark));
+    
+    --gradient-secondary: linear-gradient(135deg, 
+        var(--color-secondary), 
+        var(--color-secondary-dark));
+    
+    --gradient-accent: linear-gradient(135deg, 
+        var(--color-accent), 
+        var(--color-accent-dark));
+    
+    --gradient-gold: linear-gradient(135deg, 
+        #D4A76A, 
+        #F4D03F, 
+        #D4A76A);
+    
+    --gradient-book: linear-gradient(135deg, 
+        #8B4513, 
+        #D4A76A, 
+        #5D4037);
+    
+    --gradient-surface: linear-gradient(135deg, 
+        var(--color-surface-variant), 
+        var(--color-surface));
+    
+    --gradient-dark: linear-gradient(135deg, 
+        #1A0F0A, 
+        #2C1810);
+    
+    /* ===== FUENTES MEJORADAS ===== */
+    --font-title: 'Playfair Display', serif;
+    --font-heading: 'Crimson Text', serif;
+    --font-body: 'Montserrat', sans-serif;
+    --font-accent: 'Georgia', serif;
+    --font-mono: 'Courier New', monospace;
+    
+    /* ===== TAMAÑOS DE FUENTE RESPONSIVOS MEJORADOS ===== */
+    --fs-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* 16-18px */
+    --fs-sm: clamp(0.875rem, 0.85rem + 0.125vw, 0.9375rem); /* 14-15px */
+    --fs-xs: clamp(0.75rem, 0.725rem + 0.125vw, 0.8125rem); /* 12-13px */
+    --fs-xxs: clamp(0.625rem, 0.6rem + 0.125vw, 0.6875rem); /* 10-11px */
+    
+    --fs-lg: clamp(1.125rem, 1.075rem + 0.25vw, 1.25rem); /* 18-20px */
+    --fs-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem); /* 20-24px */
+    --fs-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem); /* 24-32px */
+    --fs-3xl: clamp(2rem, 1.6rem + 2vw, 3rem); /* 32-48px */
+    --fs-4xl: clamp(2.5rem, 1.8rem + 3.5vw, 4rem); /* 40-64px */
+    --fs-5xl: clamp(3rem, 2rem + 5vw, 5rem); /* 48-80px */
+    
+    /* ===== ESPACIADO RESPONSIVO MEJORADO ===== */
+    --spacing-xxs: clamp(0.125rem, 0.1rem + 0.125vw, 0.1875rem); /* 2-3px */
+    --spacing-xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem); /* 4-6px */
+    --spacing-sm: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem); /* 8-12px */
+    --spacing-md: clamp(1rem, 0.8rem + 1vw, 1.5rem); /* 16-24px */
+    --spacing-lg: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem); /* 24-36px */
+    --spacing-xl: clamp(2rem, 1.6rem + 2vw, 3rem); /* 32-48px */
+    --spacing-2xl: clamp(3rem, 2.4rem + 3vw, 4.5rem); /* 48-72px */
+    --spacing-3xl: clamp(4rem, 3.2rem + 4vw, 6rem); /* 64-96px */
+    --spacing-4xl: clamp(6rem, 4.8rem + 6vw, 9rem); /* 96-144px */
+    
+    /* ===== SOMBRAS MEJORADAS ===== */
+    --shadow-xs: 0 1px 2px var(--color-shadow);
+    --shadow-sm: 0 2px 4px var(--color-shadow);
+    --shadow-md: 0 4px 8px var(--color-shadow);
+    --shadow-lg: 0 8px 16px var(--color-shadow-strong);
+    --shadow-xl: 0 12px 24px var(--color-shadow-stronger);
+    --shadow-xxl: 0 20px 40px var(--color-shadow-stronger);
+    --shadow-xxxl: 0 32px 64px var(--color-shadow-stronger);
+    --shadow-inner: inset 0 2px 4px var(--color-shadow);
+    
+    /* Sombras especiales para libros */
+    --shadow-book: 5px 5px 20px var(--color-shadow-stronger),
+                   0 0 0 1px var(--color-border);
+    
+    --shadow-book-hover: 10px 10px 30px var(--color-shadow-stronger),
+                         0 0 0 1px var(--color-secondary),
+                         0 0 20px rgba(var(--color-secondary-rgb), 0.3);
+    
+    --shadow-glow: 0 0 20px rgba(var(--color-secondary-rgb), 0.5),
+                   0 0 40px rgba(var(--color-secondary-rgb), 0.3),
+                   0 0 60px rgba(var(--color-secondary-rgb), 0.1);
+    
+    /* ===== BORDES Y RADIOS MEJORADOS ===== */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-2xl: 32px;
+    --radius-3xl: 48px;
+    --radius-full: 9999px;
+    --radius-book: 4px 12px 12px 4px;
+    --radius-pill: 9999px;
+    
+    /* ===== TRANSICIONES Y ANIMACIONES MEJORADAS ===== */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-smooth: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-elastic: 800ms cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    
+    /* ===== Z-INDEX MEJORADO ===== */
+    --z-negative: -1;
+    --z-base: 1;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-backdrop: 400;
+    --z-modal: 500;
+    --z-popover: 600;
+    --z-tooltip: 700;
+    --z-toast: 800;
+    --z-preloader: 900;
+    --z-max: 9999;
+    
+    /* ===== OTROS MEJORADOS ===== */
+    --header-height: 80px;
+    --header-height-mobile: 70px;
+    --max-width: 1400px;
+    --container-padding: var(--spacing-md);
+    --section-padding: var(--spacing-2xl);
+    --container-narrow: 800px;
+    --container-wide: 1600px;
+    
+    /* ===== GRID RESPONSIVO MEJORADO ===== */
+    --grid-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    --grid-gap: var(--spacing-lg);
+    --grid-gap-sm: var(--spacing-md);
+    --grid-gap-lg: var(--spacing-xl);
+    
+    /* ===== ASPECT RATIOS ===== */
+    --aspect-square: 1 / 1;
+    --aspect-video: 16 / 9;
+    --aspect-book: 3 / 4;
+    --aspect-banner: 3 / 1;
+    --aspect-portrait: 2 / 3;
+    
+    /* ===== OPACIDADES ===== */
+    --opacity-disabled: 0.5;
+    --opacity-hover: 0.8;
+    --opacity-focus: 0.9;
+    --opacity-active: 0.7;
+    
+    /* ===== BLURS ===== */
+    --blur-sm: blur(4px);
+    --blur-md: blur(8px);
+    --blur-lg: blur(16px);
+    --blur-xl: blur(24px);
+    
+    /* ===== BORDERS ===== */
+    --border-width: 1px;
+    --border-width-thick: 2px;
+    --border-width-thicker: 3px;
+}
+
+/* Modo oscuro mejorado */
+[data-theme="dark"] {
+    --color-light: #0F0A06;
+    --color-lighter: #1A0F0A;
+    --color-dark: #F5F1E8;
+    --color-darker: #FFFFFF;
+    
+    --color-surface: #1A0F0A;
+    --color-surface-variant: #2C1810;
+    --color-surface-elevated: #2C1810;
+    --surface-rgb: 26, 15, 10;
+    
+    --color-text-primary: #F5F1E8;
+    --color-text-secondary: #D4C9B8;
+    --color-text-tertiary: #8A7F6F;
+    --color-text-on-primary: #2C1810;
+    --color-text-on-secondary: #F5F1E8;
+    
+    --color-border: #3E2723;
+    --color-border-variant: #5D4037;
+    --color-divider: #2C1810;
+    
+    --color-shadow: rgba(0, 0, 0, 0.25);
+    --color-shadow-strong: rgba(0, 0, 0, 0.35);
+    --color-shadow-stronger: rgba(0, 0, 0, 0.5);
+    
+    /* Colores actualizados para modo oscuro */
+    --color-primary: #A0522D;
+    --color-primary-light: #C17A50;
+    --color-primary-dark: #8B4513;
+    --color-primary-rgb: 160, 82, 45;
+    
+    --color-secondary: #D4A76A;
+    --color-secondary-light: #E6C9A0;
+    --color-secondary-dark: #B89446;
+    --color-secondary-rgb: 212, 167, 106;
+}
+
+/* Responsive mejorado */
+@media (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+        --container-padding: var(--spacing-sm);
+        --section-padding: var(--spacing-xl);
+        --grid-gap: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --header-height: 60px;
+        --container-padding: var(--spacing-sm);
+        --section-padding: var(--spacing-lg);
+        --grid-gap: var(--spacing-sm);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    :root {
+        --color-primary: #5D2906;
+        --color-secondary: #B89446;
+        --color-border: #2C1810;
+    }
+    
+    [data-theme="dark"] {
+        --color-primary: #C17A50;
+        --color-secondary: #E6C9A0;
+        --color-border: #5D4037;
+    }
+}
+
+/* Print mode */
+@media print {
+    :root {
+        --color-text-primary: #000000;
+        --color-text-secondary: #333333;
+        --color-surface: #FFFFFF;
+        --color-shadow: transparent;
+    }
+}

@@ -1,0 +1,465 @@
+[data-theme="dark"] {
+    /* Colores principales más agradables y legibles */
+    --color-light: #121212;
+    --color-lighter: #1E1E1E;
+    --color-surface: #242424;
+    --color-surface-variant: #2D2D2D;
+    --color-surface-elevated: #333333;
+    --surface-rgb: 36, 36, 36;
+    
+    --color-text-primary: #F0F0F0;
+    --color-text-secondary: #CCCCCC;
+    --color-text-tertiary: #AAAAAA;
+    --color-text-on-primary: #FFFFFF;
+    --color-text-on-secondary: #FFFFFF;
+    
+    /* Colores primarios más suaves */
+    --color-primary: #C17A50;
+    --color-primary-light: #D4A482;
+    --color-primary-dark: #A0522D;
+    --color-primary-rgb: 193, 122, 80;
+    
+    --color-secondary: #D4A76A;
+    --color-secondary-light: #E6C9A0;
+    --color-secondary-dark: #B89446;
+    --color-secondary-rgb: 212, 167, 106;
+    
+    --color-accent: #8D6E63;
+    --color-accent-light: #A1887F;
+    --color-accent-dark: #6D4C41;
+    --color-accent-rgb: 141, 110, 99;
+    
+    /* Bordes más suaves */
+    --color-border: #3A3A3A;
+    --color-border-variant: #4A4A4A;
+    --color-divider: #2D2D2D;
+    
+    /* Sombras más profundas pero no negras */
+    --color-shadow: rgba(0, 0, 0, 0.2);
+    --color-shadow-strong: rgba(0, 0, 0, 0.35);
+    --color-shadow-stronger: rgba(0, 0, 0, 0.5);
+    
+    /* Gradientes mejorados para modo oscuro */
+    --gradient-primary: linear-gradient(135deg, 
+        var(--color-primary), 
+        var(--color-accent));
+    
+    --gradient-dark: linear-gradient(135deg, 
+        #1E1E1E, 
+        #2D2D2D);
+}
+
+[data-theme="dark"] body {
+    background-color: var(--color-light);
+    color: var(--color-text-primary);
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Header en modo oscuro mejorado */
+[data-theme="dark"] .header {
+    background: rgba(30, 30, 30, 0.98);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Hero section en modo oscuro */
+[data-theme="dark"] .hero {
+    background: linear-gradient(135deg, 
+                #121212 0%, 
+                #1E1E1E 50%, 
+                #242424 100%);
+}
+
+[data-theme="dark"] .hero-bg-pattern {
+    background: radial-gradient(circle at 20% 50%, 
+                rgba(193, 122, 80, 0.12) 0%, 
+                transparent 50%),
+                radial-gradient(circle at 80% 20%, 
+                rgba(212, 167, 106, 0.08) 0%, 
+                transparent 50%);
+    opacity: 0.4;
+}
+
+[data-theme="dark"] .hero-title {
+    color: var(--color-text-primary);
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .highlight {
+    color: var(--color-secondary);
+}
+
+[data-theme="dark"] .highlight::after {
+    background: var(--color-primary);
+    opacity: 0.4;
+}
+
+[data-theme="dark"] .hero-description {
+    color: var(--color-text-secondary);
+}
+
+/* Cards y contenedores mejorados */
+[data-theme="dark"] .company-card,
+[data-theme="dark"] .testimonial-card,
+[data-theme="dark"] .gallery-item,
+[data-theme="dark"] .newsletter-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .company-card:hover,
+[data-theme="dark"] .testimonial-card:hover,
+[data-theme="dark"] .gallery-item:hover {
+    background: var(--color-surface-elevated);
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(193, 122, 80, 0.2);
+    transform: translateY(-4px);
+}
+
+/* Libros en modo oscuro */
+[data-theme="dark"] .libro-card-front {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .libro-card-back {
+    background: linear-gradient(135deg, 
+                var(--color-surface) 0%, 
+                var(--color-surface-variant) 100%);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .libro-cover {
+    background: linear-gradient(135deg, 
+                var(--color-surface-variant), 
+                var(--color-surface));
+}
+
+/* Botones mejorados en modo oscuro */
+[data-theme="dark"] .button-primary {
+    background: linear-gradient(135deg, 
+                var(--color-primary), 
+                var(--color-primary-dark));
+    color: var(--color-text-on-primary);
+    border: none;
+}
+
+[data-theme="dark"] .button-primary:hover {
+    background: linear-gradient(135deg, 
+                var(--color-primary-light), 
+                var(--color-primary));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(193, 122, 80, 0.3);
+}
+
+[data-theme="dark"] .button-outline {
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+}
+
+[data-theme="dark"] .button-outline:hover {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-primary);
+}
+
+/* Footer mejorado */
+[data-theme="dark"] .footer {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .footer-main {
+    background: linear-gradient(135deg, 
+                var(--color-surface-variant) 0%, 
+                var(--color-surface) 100%);
+}
+
+[data-theme="dark"] .footer-bottom {
+    background: var(--color-surface-variant);
+    border-top: 1px solid var(--color-border);
+}
+
+/* Marquee en modo oscuro */
+[data-theme="dark"] .marquee-container {
+    background: linear-gradient(135deg, 
+                rgba(36, 36, 36, 0.9) 0%, 
+                rgba(45, 45, 45, 0.9) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+[data-theme="dark"] .logo-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .logo-item:hover {
+    background: var(--color-surface-elevated);
+    border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .logo-item i {
+    color: var(--color-primary);
+}
+
+[data-theme="dark"] .logo-item:hover i {
+    color: var(--color-secondary);
+}
+
+[data-theme="dark"] .logo-name {
+    color: var(--color-text-primary);
+}
+
+/* Imágenes optimizadas para modo oscuro */
+[data-theme="dark"] img {
+    filter: brightness(0.85) contrast(1.1) saturate(0.9);
+    transition: filter 0.3s ease;
+}
+
+[data-theme="dark"] img:hover {
+    filter: brightness(0.9) contrast(1.15) saturate(1);
+}
+
+[data-theme="dark"] .logo-image {
+    filter: brightness(1.2) contrast(1.1) saturate(1.1);
+}
+
+/* Formularios en modo oscuro */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+    background: var(--color-surface-variant);
+    border: 2px solid var(--color-border);
+    color: var(--color-text-primary);
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+    background: var(--color-surface);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(193, 122, 80, 0.2);
+    outline: none;
+}
+
+/* Botones flotantes */
+[data-theme="dark"] .floating-button {
+    background: linear-gradient(135deg, 
+                var(--color-surface-variant) 0%, 
+                var(--color-surface) 100%);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .floating-button:hover {
+    background: linear-gradient(135deg, 
+                var(--color-primary) 0%, 
+                var(--color-primary-dark) 100%);
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 30px rgba(193, 122, 80, 0.4);
+}
+
+/* Notificaciones */
+[data-theme="dark"] .notification {
+    background: linear-gradient(135deg, 
+                var(--color-surface-variant) 0%, 
+                var(--color-surface) 100%);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Lightbox mejorado */
+[data-theme="dark"] .lightbox {
+    background: rgba(0, 0, 0, 0.95);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+}
+
+[data-theme="dark"] .lightbox-content {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* Secciones mejoradas */
+[data-theme="dark"] .section-title {
+    color: var(--color-text-primary);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .section-subtitle {
+    color: var(--color-text-secondary);
+}
+
+/* Barras de progreso y elementos de UI */
+[data-theme="dark"] .progress-bar {
+    background: var(--color-border);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Efectos de hover suaves */
+[data-theme="dark"] .nav__link:hover {
+    background: rgba(193, 122, 80, 0.15);
+    color: var(--color-secondary);
+}
+
+[data-theme="dark"] .social-link:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-3px) scale(1.05);
+}
+
+/* Transiciones suaves para todos los elementos */
+[data-theme="dark"] * {
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scrollbar personalizado para modo oscuro */
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--color-surface-variant);
+    border-radius: 6px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+                var(--color-primary), 
+                var(--color-accent));
+    border-radius: 6px;
+    border: 2px solid var(--color-surface-variant);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+                var(--color-primary-light), 
+                var(--color-accent-light));
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-corner {
+    background: var(--color-surface-variant);
+}
+
+/* Selection color en modo oscuro */
+[data-theme="dark"] ::selection {
+    background: rgba(193, 122, 80, 0.4);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] ::-moz-selection {
+    background: rgba(193, 122, 80, 0.4);
+    color: var(--color-text-primary);
+}
+
+/* Placeholders mejorados */
+[data-theme="dark"] ::placeholder {
+    color: var(--color-text-tertiary);
+    opacity: 0.8;
+}
+
+[data-theme="dark"] :-ms-input-placeholder {
+    color: var(--color-text-tertiary);
+}
+
+[data-theme="dark"] ::-ms-input-placeholder {
+    color: var(--color-text-tertiary);
+}
+
+/* Checkboxes y radio buttons */
+[data-theme="dark"] input[type="checkbox"],
+[data-theme="dark"] input[type="radio"] {
+    filter: brightness(0.8) contrast(1.2);
+}
+
+/* Tablas (si las hubiera) */
+[data-theme="dark"] table {
+    border-color: var(--color-border);
+}
+
+[data-theme="dark"] th {
+    background: var(--color-surface-variant);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] td {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+}
+
+/* Quotes y blockquotes */
+[data-theme="dark"] blockquote {
+    background: var(--color-surface-variant);
+    border-left: 4px solid var(--color-primary);
+    color: var(--color-text-secondary);
+}
+
+/* Code snippets */
+[data-theme="dark"] code,
+[data-theme="dark"] pre {
+    background: var(--color-surface-variant);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+}
+
+/* Tooltips */
+[data-theme="dark"] [data-tooltip]::after {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Efecto de vidrio esmerilado para algunos elementos */
+[data-theme="dark"] .glass-effect {
+    background: rgba(36, 36, 36, 0.7);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Modo oscuro para modal */
+[data-theme="dark"] .modal-container {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .modal-header {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+}
+
+[data-theme="dark"] .modal-libreta-card {
+    background: var(--color-surface-variant);
+    border-color: var(--color-border);
+}
+
+[data-theme="dark"] .modal-libreta-card:hover {
+    border-color: var(--color-primary);
+    background: var(--color-surface-elevated);
+}
+
+[data-theme="dark"] .modal-body::-webkit-scrollbar-track {
+    background: var(--color-surface);
+}
+
+/* Modo oscuro para newsletter */
+[data-theme="dark"] .newsletter-card {
+    background: linear-gradient(135deg, var(--color-surface-variant), var(--color-surface));
+    border: 1px solid var(--color-border);
+}
