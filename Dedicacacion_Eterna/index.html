@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Productos personalizados - Sueños de Papiro. Agendas, regalos y creaciones únicas hechas con dedicación eterna.">
+    <meta name="keywords" content="productos personalizados, agendas personalizadas, regalos personalizados, Sueños de Papiro, dedicación eterna">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Sueños de Papiro - Productos Personalizados">
+    <meta property="og:description" content="Descubre nuestras creaciones personalizadas hechas con dedicación eterna.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:image" content="assets/images/brand/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sueños de Papiro - Productos Personalizados">
+    <meta name="twitter:description" content="Detalles hechos para recordar: productos personalizados con dedicación eterna.">
+    <meta name="twitter:image" content="assets/images/brand/logo.png">
+    <meta name="theme-color" content="#8B4513">
+    
+    <title>Sueños de Papiro | Productos Personalizados</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/brand/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/brand/logo.png">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <!-- Reemplazar el contenido del preloader existente con: -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-container">
+            <div class="notebook-preloader">
+                <!-- Tapa -->
+                <div class="notebook-cover">
+                    <div class="notebook-spine"></div>
+                    <div class="cover-content">
+                        <img src="assets/images/brand/logo.png" alt="Sueños de Papiro Logo" class="logo-image">
+                    </div>
+                </div>
+                
+                <!-- Páginas -->
+                <div class="notebook-pages">
+                    <div class="page page-1"></div>
+                    <div class="page page-2"></div>
+                    <div class="page page-3"></div>
+                    <div class="page page-4"></div>
+                    <div class="page page-5"></div>
+                </div>
+                
+                <!-- Contratapa -->
+                <div class="notebook-back"></div>
+            </div>
+            
+            <div class="preloader-text">
+                <div class="loading-message">
+                    <span class="typing-text" id="typing-text">Preparando tus creaciones...</span>
+                    <span class="typing-cursor">|</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">
+                <div class="logo-container">
+                    <div class="logo-image-container">
+                        <img src="assets/images/brand/logo.png" alt="Sueños de Papiro Logo" class="logo-image">
+                    </div>
+                </div>
+            </a>
+            
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="#inicio" class="nav__link active">
+                            <i class="fas fa-home nav-icon"></i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#catalogo" class="nav__link">
+                            <i class="fas fa-gift nav-icon"></i>
+                            <span>Catálogo</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#galeria" class="nav__link">
+                            <i class="fas fa-images nav-icon"></i>
+                            <span>Creaciones</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#testimonios" class="nav__link">
+                            <i class="fas fa-comment nav-icon"></i>
+                            <span>Testimonios</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#contacto" class="nav__link">
+                            <i class="fas fa-envelope nav-icon"></i>
+                            <span>Contacto</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav__actions">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
+                        <i class="fas fa-moon moon-icon"></i>
+                        <i class="fas fa-sun sun-icon hidden"></i>
+                    </button>
+                    
+                    <button class="nav__close" id="nav-close" aria-label="Cerrar menú">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="nav__right">
+                <button class="theme-toggle mobile-theme" id="mobile-theme-toggle" aria-label="Cambiar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="nav__toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" class="main">
+        <!-- Tendencia destacada: Velas Personalizadas (un solo producto, 3 vistas) -->
+        <section class="trend-section" id="tendencia" aria-labelledby="tendencia-title" data-aos="fade-up">
+            <div class="container trend-container">
+                <div class="trend-header">
+                    <span class="trend-badge"><span aria-hidden="true">✦</span> Tendencia</span>
+                    <h2 class="trend-title" id="tendencia-title">Velas Personalizadas</h2>
+                    <p class="trend-subtitle">Descubre nuestras velas personalizadas, creadas para convertir momentos especiales en recuerdos únicos.</p>
+                </div>
+                <div class="trend-grid">
+                    <div class="trend-media">
+                        <div class="trend-main" id="trend-main">
+                            <button type="button" class="trend-zoom" id="trend-zoom" aria-label="Ampliar imagen: Vela personalizada">
+                                <img id="trend-image" src="assets/images/products/velas-one/vela-01.jpeg" alt="Vela personalizada" fetchpriority="high">
+                                <span class="zoom-hint" aria-hidden="true"><i class="fas fa-search-plus"></i></span>
+                            </button>
+                            <span class="trend-counter" id="trend-counter" aria-live="polite">1 / 3</span>
+                            <button type="button" class="trend-arrow trend-prev" id="trend-prev" aria-label="Imagen anterior">
+                                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="trend-arrow trend-next" id="trend-next" aria-label="Imagen siguiente">
+                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="trend-thumbs" role="group" aria-label="Vistas de la vela personalizada">
+                            <button type="button" class="trend-thumb is-active" data-index="0" aria-label="Ver vista 1 de la vela" aria-current="true">
+                                <img src="assets/images/products/velas-one/vela-01.jpeg" alt="" loading="lazy">
+                            </button>
+                            <button type="button" class="trend-thumb" data-index="1" aria-label="Ver vista 2 de la vela" aria-current="false">
+                                <img src="assets/images/products/velas-one/vela-02.jpeg" alt="" loading="lazy">
+                            </button>
+                            <button type="button" class="trend-thumb" data-index="2" aria-label="Ver vista 3 de la vela" aria-current="false">
+                                <img src="assets/images/products/velas-one/vela-03.jpeg" alt="" loading="lazy">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="trend-info">
+                        <p class="trend-eyebrow">Producto destacado</p>
+                        <h3 class="trend-product-name">Vela Personalizada</h3>
+                        <p class="trend-desc">Hay deseos que se dicen en voz alta… y otros que se encienden con el corazón. Esta vela de Jesús Nazareno de Magüí Payán puede ser ese pequeño detalle para alguien especial, para acompañar tus oraciones, tus sueños, tus proyectos o aquello que deseas con todo el corazón. Una luz para un deseo, una oración, una esperanza o un momento de gratitud.</p>
+                        <div class="trend-actions">
+                            <a id="trend-wa" class="button button-primary button-lg" target="_blank" rel="noopener" href="#">
+                                <i class="fab fa-whatsapp button-icon" aria-hidden="true"></i><span>Consultar por WhatsApp</span>
+                            </a>
+                            <button type="button" id="trend-details" class="button button-outline">
+                                <i class="fas fa-eye" aria-hidden="true"></i><span>Ver detalles</span>
+                            </button>
+                        </div>
+                        <p class="trend-note">Toca la foto para ampliar · 3 vistas del mismo producto</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Section -->
+        <section class="hero" id="inicio">
+            <div class="hero-background">
+                <div class="hero-bg-pattern"></div>
+            </div>
+            
+            <div class="hero-content container">
+                <div class="hero-text" data-aos="fade-up" data-aos-delay="200">
+                    <div class="hero-badge">
+                        <span>Sueños de Papiro · Dedicación Eterna</span>
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="title-line title-line-1">Detalles hechos</span>
+                        <span class="title-line title-line-2 highlight">para recordar</span>
+                    </h1>
+                    <p class="hero-description">
+                        Transformamos tus ideas, momentos y recuerdos en creaciones únicas y personalizadas.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#catalogo" class="button button-primary button-lg hero-button">
+                            <span>Ver Catálogo</span>
+                            <i class="fas fa-arrow-right button-icon"></i>
+                        </a>
+                        <a href="#" data-wa="general" class="button button-outline button-lg hero-button">
+                            <i class="fab fa-whatsapp button-icon"></i>
+                            <span>Consultar por WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual" data-aos="fade-left" data-aos-delay="400">
+                    <figure class="hero-media">
+                        <img src="assets/images/brand/one.png" alt="Agenda personalizada con fotografía, nombre y diseño a todo color" class="hero-media-img" fetchpriority="high">
+                        <figcaption class="hero-chip hero-chip-1">100% personalizado</figcaption>
+                        <figcaption class="hero-chip hero-chip-2">Hecho a mano</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="section-divider" aria-hidden="true">
+                <span></span><em>✦</em><span></span>
+            </div>
+        </section>
+
+        <!-- Sección de Redes Sociales -->
+        <section class="companies-section section" id="redes-sociales" data-aos="fade-up">
+            <div class="container">
+                <div class="section-header">
+                    <p class="social-eyebrow">Síguenos</p>
+                    <h2 class="section-title">Nuestras Redes Sociales</h2>
+                </div>
+
+                <div class="social-row">
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener" class="social-circle facebook" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" rel="noopener" class="social-circle instagram" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.tiktok.com" target="_blank" rel="noopener" class="social-circle tiktok" aria-label="TikTok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                    <a data-wa="general" class="social-circle whatsapp" aria-label="WhatsApp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Catálogo de Productos -->
+        <section class="catalog-section section" id="catalogo">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <div class="section-badge">Catálogo</div>
+                    <h2 class="section-title">Creaciones Personalizadas</h2>
+                    <p class="section-subtitle">
+                        Encuentra inspiración, personaliza tu idea y consúltanos por WhatsApp
+                    </p>
+                </div>
+
+                <div class="catalog-filters" id="catalog-filters" role="group" aria-label="Filtrar productos por categoría" data-aos="fade-up" data-aos-delay="100">
+                    <!-- Los filtros se generan automáticamente -->
+                </div>
+                
+                <div class="products-grid" id="products-grid">
+                    <!-- Los productos se cargan dinámicamente -->
+                </div>
+
+                <!-- Botón Ver Más -->
+                <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="300">
+                    <button class="button button-outline button-lg" id="ver-mas-productos">
+                        <span>Ver más productos</span>
+                        <i class="fas fa-arrow-down button-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creaciones -->
+        <section class="gallery-section section" id="galeria">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <div class="section-badge">Creaciones</div>
+                    <h2 class="section-title">Algunos de Nuestros Trabajos</h2>
+                    <p class="section-subtitle">
+                        Detalles, materiales y diseños de nuestras creaciones personalizadas
+                    </p>
+                </div>
+                
+                <div class="gallery-filters" data-aos="fade-up" data-aos-delay="100">
+                    <button class="filter-btn active" data-filter="all" aria-pressed="true">Todo</button>
+                    <button class="filter-btn" data-filter="disenos" aria-pressed="false">Diseños</button>
+                    <button class="filter-btn" data-filter="materiales" aria-pressed="false">Materiales</button>
+                    <button class="filter-btn" data-filter="detalles" aria-pressed="false">Detalles</button>
+                </div>
+                
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Las imágenes se cargan dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios -->
+        <section class="testimonials-section section" id="testimonios">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <div class="section-badge">Testimonios</div>
+                    <h2 class="section-title">Lo que Dicen Nuestros Clientes</h2>
+                    <p class="section-subtitle">
+                        Cada creación cuenta una historia. Estas son algunas de las experiencias de quienes confiaron en nosotros.
+                    </p>
+                </div>
+                
+                <div class="testimonials-container" id="testimonials-container">
+                    <!-- Los testimonios se cargan dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Comunidad WhatsApp -->
+        <section class="community-section section" data-aos="fade-up">
+            <div class="container">
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h2>Únete a Nuestra Comunidad</h2>
+                        <p>
+                            Conéctate con otros amantes de las creaciones personalizadas, comparte tus ideas, 
+                            recibe consejos y sé el primero en conocer nuestras novedades.
+                        </p>
+                        <a href="#" data-wa="community"
+                           class="button button-primary button-lg">
+                            <i class="fab fa-whatsapp button-icon"></i>
+                            <span>Unirse al Grupo de WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="contacto">
+        <div class="footer-main">
+            <div class="container">
+                <div class="footer-grid">
+                    <!-- Columna 1: Logo y Descripción -->
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <h3 class="logo-text">Sueños de Papiro</h3>
+                            <span class="logo-subtext">Dedicación Eterna</span>
+                        </div>
+                        <p class="footer-description">
+                            Creamos productos personalizados que guardan tus momentos e ideas. 
+                            Cada creación es única, elaborada con pasión y atención a cada detalle.
+                        </p>
+                        <div class="footer-social">
+                            <a href="https://facebook.com" class="social-link" target="_blank" rel="noopener" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://tiktok.com" class="social-link" target="_blank" rel="noopener" title="TikTok">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Columna 2: Contacto -->
+                    <div class="footer-col">
+                        <h4 class="footer-title">Contacto</h4>
+                        <div class="footer-contact">
+                           
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <strong>Teléfono</strong>
+                                    <p>+57 324 577 8318</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <div>
+                                    <strong>WhatsApp</strong>
+                                    <p><a href="#" data-wa="general" class="contact-link">Escríbenos por WhatsApp</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p class="copyright">
+                        &copy; 2026 <strong>Sueños de Papiro</strong> - Dedicación Eterna. Todos los derechos reservados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Detalle de Producto -->
+    <div class="modal-overlay" id="product-modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="product-modal-title">Detalle del producto</h3>
+                <button class="modal-close" id="modal-close" aria-label="Cerrar detalle">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="product-detail" id="product-detail">
+                    <!-- El detalle se carga dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones Flotantes -->
+    <div class="floating-buttons">
+        <a href="#" data-wa="general"
+           class="floating-button whatsapp-button"
+           data-tooltip="¿Necesitas ayuda?"
+           title="Chatea con nosotros por WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+
+        <button class="floating-button back-to-top" id="back-to-top" data-tooltip="Volver arriba" title="Volver arriba">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/products.js" defer></script>
+    <script src="js/whatsapp.js" defer></script>
+    <script src="js/catalog.js" defer></script>
+    <script src="js/featured.js" defer></script>
+    <script src="js/app.js" defer></script>
+</body>
+</html>
