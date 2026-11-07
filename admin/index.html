@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Panel administrativo | Sueños de Papiro</title>
+    <link rel="icon" type="image/png" href="/assets/images/brand/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body class="admin-body">
+
+    <div id="login-screen" class="login-screen" hidden>
+        <div class="login-brand">
+            <div class="login-brand-inner">
+                <img src="/assets/images/brand/logo.png" alt="Sueños de Papiro" class="login-logo">
+                <h1>Sueños de Papiro</h1>
+                <p class="login-tagline">Detalles hechos para recordar, con dedicación eterna.</p>
+                <div class="login-brand-decoration">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <i class="fa-solid fa-book-open"></i>
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+            </div>
+        </div>
+        <div class="login-form-side">
+            <form id="login-form" class="login-card" novalidate>
+                <h2>Panel administrativo</h2>
+                <p class="login-subtitle">Accede con tu cuenta autorizada.</p>
+
+                <div id="login-error" class="form-alert" hidden></div>
+
+                <div class="field">
+                    <label for="login-email">Correo electrónico</label>
+                    <div class="input-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="login-email" name="email" autocomplete="username" placeholder="tu@correo.com" required>
+                    </div>
+                    <span class="field-error" data-error-for="login-email"></span>
+                </div>
+
+                <div class="field">
+                    <label for="login-password">Contraseña</label>
+                    <div class="input-icon">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="login-password" name="password" autocomplete="current-password" placeholder="Tu contraseña" required>
+                        <button type="button" class="icon-btn" id="toggle-password" aria-label="Mostrar contraseña">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="field-error" data-error-for="login-password"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" id="login-submit">
+                    <span class="btn-label">Iniciar sesión</span>
+                    <i class="fa-solid fa-spinner fa-spin btn-spinner" hidden></i>
+                </button>
+
+                <p class="login-note"><i class="fa-solid fa-shield-halved"></i> Acceso restringido al equipo del negocio.</p>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-shell" class="app-shell" hidden>
+        <div id="sidebar-overlay" class="sidebar-overlay" hidden></div>
+
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-brand">
+                <img src="/assets/images/brand/logo.png" alt="Sueños de Papiro">
+                <div>
+                    <strong>Sueños de Papiro</strong>
+                    <span>Panel administrativo</span>
+                </div>
+            </div>
+            <nav id="sidebar-nav" class="sidebar-nav"></nav>
+            <div class="sidebar-footer">
+                <a href="/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver catálogo</a>
+            </div>
+        </aside>
+
+        <div class="main-column">
+            <header class="topbar">
+                <button id="btn-menu" class="icon-btn topbar-menu" aria-label="Abrir menú">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h2 id="page-title">Dashboard</h2>
+                <div class="topbar-actions">
+                    <div class="user-chip" id="user-chip">
+                        <span id="user-avatar" class="user-avatar"></span>
+                        <span class="user-meta">
+                            <strong id="user-name"></strong>
+                            <em id="user-role" class="role-badge"></em>
+                        </span>
+                    </div>
+                    <button id="btn-logout" class="btn btn-ghost" title="Cerrar sesión">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="btn-label">Salir</span>
+                    </button>
+                </div>
+            </header>
+
+            <main id="view" class="view" tabindex="-1"></main>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+    <div id="modal-root"></div>
+
+    <script type="module" src="/admin/js/app.js"></script>
+</body>
+</html>

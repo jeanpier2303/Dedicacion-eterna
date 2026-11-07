@@ -3,7 +3,9 @@
 // ------------------------------------------------------------
 // Lee window.PRODUCTS / CATEGORIES / TESTIMONIALS / GALLERY
 // (js/products.js) y genera todo el HTML automáticamente.
-// Agregar un producto = añadir un objeto en products.js.
+// Además sincroniza productos y categorías publicados desde el
+// panel administrativo vía /api/catalog (Supabase); los datos
+// locales se conservan como respaldo si la API no responde.
 // Los enlaces salen de window.WhatsApp (js/whatsapp.js).
 // ============================================================
 window.Catalog = (function () {
@@ -30,6 +32,81 @@ window.Catalog = (function () {
         return getProducts().find(function (p) { return p.id === id; });
     }
 
+    // ---------- Sincronización con el backend (/api/catalog) ----------
+    // El panel administrativo gestiona productos y categorías en
+    // Supabase. Aquí se fusionan con los datos locales: primero los
+    // del panel (ordenados por display_order) y después los locales
+    // que aún no existan allí. Si coincide el slug, gana el panel.
+
+    var API_PRODUCTS = '/api/catalog/products';
+    var API_CATEGORIES = '/api/catalog/categories';
+    var FALLBACK_IMAGE = 'assets/images/brand/logo.png';
+
+    function mapApiProduct(p) {
+        var images = (p.images || []).filter(function (src) { return !!src; });
+        var image = p.image || images[0] || null;
+        return {
+            id: p.slug || p.id,
+            name: p.name || '',
+            category: (p.category && p.category.slug) || 'otros',
+            shortDescription: p.short_description || '',
+            description: p.description || p.short_description || '',
+            image: image,
+            images: images,
+            price: (p.price === undefined ? null : p.price),
+            oldPrice: (p.old_price === undefined ? null : p.old_price),
+            featured: !!p.is_featured
+        };
+    }
+
+    function mergeApiData(apiProducts, apiCategories) {
+        var merged = apiProducts.slice();
+        (window.PRODUCTS || []).forEach(function (p) {
+            var apiProduct = merged.find(function (item) { return item.id === p.id; });
+            if (!apiProduct) {
+                merged.push(p);
+            } else if (!apiProduct.image && !apiProduct.images.length) {
+                apiProduct.image = p.image || FALLBACK_IMAGE;
+                apiProduct.images = (p.images && p.images.length) ? p.images : [apiProduct.image];
+            }
+        });
+        merged.forEach(function (p) {
+            if (!p.image) p.image = FALLBACK_IMAGE;
+            if (!p.images || !p.images.length) p.images = [p.image];
+        });
+        window.PRODUCTS = merged;
+
+        var cats = window.CATEGORIES || {};
+        (apiCategories || []).forEach(function (c) {
+            if (c.slug && !cats[c.slug]) cats[c.slug] = c.name;
+        });
+        window.CATEGORIES = cats;
+    }
+
+    function fetchJson(url) {
+        return fetch(url, { headers: { Accept: 'application/json' } })
+            .then(function (res) { return res.ok ? res.json() : null; })
+            .catch(function () { return null; });
+    }
+
+    function syncFromApi() {
+        if (typeof fetch !== 'function') return;
+        Promise.all([fetchJson(API_PRODUCTS), fetchJson(API_CATEGORIES)])
+            .then(function (results) {
+                var data = results[0];
+                if (!data || !Array.isArray(data.products)) return;
+                var cats = (results[1] && results[1].categories) || [];
+                mergeApiData(data.products.map(mapApiProduct), cats);
+                renderFilters();
+                renderProducts();
+                // Abre ?producto= si el producto venía del panel y el
+                // modal no esté ya abierto con otro producto.
+                var currentId = productIdFromQuery();
+                var modalOpen = elements.modal && elements.modal.classList.contains('active');
+                if (currentId && !modalOpen) openFromQuery();
+            });
+    }
+
     function init() {
         elements = {
             filters: document.getElementById('catalog-filters'),
@@ -51,6 +128,7 @@ window.Catalog = (function () {
         initModal();
         bindEvents();
         openFromQuery();
+        syncFromApi();
     }
 
     // Lee ?producto=id de forma segura: solo abre si el ID existe
@@ -126,18 +204,13 @@ window.Catalog = (function () {
     }
 
     function visibleProducts() {
-        var list = getProducts().filter(function (p) {
+        return getProducts().filter(function (p) {
             return activeCategory === 'all' || p.category === activeCategory;
         });
-        if (activeCategory === 'all' && !showAll) {
-            return list.filter(function (p) { return p.featured; });
-        }
-        return list;
     }
 
     function hiddenCount() {
-        if (activeCategory !== 'all' || showAll) return 0;
-        return getProducts().filter(function (p) { return !p.featured; }).length;
+        return 0;
     }
 
     // ---------- Tarjetas ----------
