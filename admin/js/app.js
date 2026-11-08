@@ -21,16 +21,16 @@ const NAV_SECTIONS = [
 ];
 
 const ROUTES = {
-  dashboard: { title: 'Dashboard', roles: ['administrador', 'editor', 'consulta'], render: renderDashboard },
-  productos: { title: 'Productos', roles: ['administrador', 'editor'], render: renderProducts },
-  categorias: { title: 'Categorías', roles: ['administrador', 'editor', 'consulta'], render: renderCategories },
+  dashboard: { title: 'Dashboard', roles: ['administrador'], render: renderDashboard },
+  productos: { title: 'Productos', roles: ['administrador'], render: renderProducts },
+  categorias: { title: 'Categorías', roles: ['administrador'], render: renderCategories },
   usuarios: { title: 'Usuarios', roles: ['administrador'], render: renderUsers },
 };
 
-const ROLE_LABELS = { administrador: 'Administrador', editor: 'Editor', consulta: 'Consulta' };
+const ROLE_LABELS = { administrador: 'Administrador' };
 
 function role() {
-  return state.profile?.role || 'consulta';
+  return state.profile?.role || null;
 }
 
 function currentRouteKey() {

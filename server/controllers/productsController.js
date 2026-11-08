@@ -12,7 +12,7 @@ function parseBoolean(value) {
 
 export async function list(req, res) {
   if (req.method !== 'GET') return methodNotAllowed(res, ['GET']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const query = req.query || {};
   const products = await productService.list({
     slug: qp(query.slug),
@@ -26,7 +26,7 @@ export async function list(req, res) {
 
 export async function create(req, res) {
   if (req.method !== 'POST') return methodNotAllowed(res, ['POST']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const result = validateProduct(req.body);
   if (result.errors) return badRequest(res, result.errors);
   const product = await productService.create(result.data);
@@ -35,7 +35,7 @@ export async function create(req, res) {
 
 export async function get(req, res) {
   if (req.method !== 'GET') return methodNotAllowed(res, ['GET']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const id = qp(req.query?.id);
   if (!id) return notFound(res, 'Producto no encontrado');
   const product = await productService.get(id);
@@ -44,7 +44,7 @@ export async function get(req, res) {
 
 export async function update(req, res) {
   if (req.method !== 'PATCH') return methodNotAllowed(res, ['PATCH']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const id = qp(req.query?.id);
   if (!id) return notFound(res, 'Producto no encontrado');
   const result = validateProduct(req.body, { partial: true });
@@ -55,7 +55,7 @@ export async function update(req, res) {
 
 export async function remove(req, res) {
   if (req.method !== 'DELETE') return methodNotAllowed(res, ['DELETE']);
-  await requireAuth(req, 'administrador');
+  await requireAuth(req);
   const id = qp(req.query?.id);
   if (!id) return notFound(res, 'Producto no encontrado');
   const result = await productService.remove(id);

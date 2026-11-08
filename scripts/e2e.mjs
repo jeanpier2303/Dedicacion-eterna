@@ -68,7 +68,7 @@ async function createTempUser(email, role) {
   if (error) throw new Error(`createUser: ${error.message}`);
   track.userIds.push(data.user.id);
   if (role) {
-    const { error: roleError } = await admin.from('profiles').update({ role }).eq('id', data.user.id);
+    const { error: roleError } = await admin.from('profiles').upsert({ id: data.user.id, role }, { onConflict: 'id' });
     if (roleError) throw new Error(`setRole: ${roleError.message}`);
   }
   return data.user;
@@ -179,6 +179,14 @@ try {
     return r.data?.error || '';
   });
 
+  await t('login de cuenta sin acceso al panel -> 403', async () => {
+    const email = `e2e-noaccess-${stamp}@example.com`;
+    await createTempUser(email);
+    const r = await login(email, password);
+    expect(r.status === 403, `status ${r.status}: ${r.data?.error || ''}`);
+    return r.data?.error || '';
+  });
+
   await t('/api/auth/me con token -> 200 rol correcto', async () => {
     const r = await api('GET', '/api/auth/me', { token: adminToken });
     expect(r.status === 200, `status ${r.status}`);
@@ -220,25 +228,26 @@ try {
     return `${r.data.users.length} usuarios`;
   });
 
-  await t('POST /api/users crea editor -> 201', async () => {
-    const r = await api('POST', '/api/users', { token: adminToken, body: { email: editorEmail, password, full_name: 'Editor E2E', role: 'editor' } });
+  await t('POST /api/users crea administrador -> 201', async () => {
+    const r = await api('POST', '/api/users', { token: adminToken, body: { email: editorEmail, password, full_name: 'Administrador E2E' } });
     expect(r.status === 201, `status ${r.status}: ${r.data?.error || ''}`);
-    expect(r.data.user.role === 'editor', `rol ${r.data.user.role}`);
+    expect(r.data.user.role === 'administrador', `rol ${r.data.user.role}`);
     editorId = r.data.user.id;
     track.userIds.push(editorId);
-    return 'rol editor';
+    return 'rol administrador';
   });
 
-  await t('POST /api/users crea consulta -> 201', async () => {
-    const r = await api('POST', '/api/users', { token: adminToken, body: { email: viewerEmail, password, role: 'consulta' } });
+  await t('POST /api/users crea segundo administrador -> 201', async () => {
+    const r = await api('POST', '/api/users', { token: adminToken, body: { email: viewerEmail, password } });
     expect(r.status === 201, `status ${r.status}: ${r.data?.error || ''}`);
+    expect(r.data.user.role === 'administrador', `rol ${r.data.user.role}`);
     viewerId = r.data.user.id;
     track.userIds.push(viewerId);
-    return 'rol consulta';
+    return 'rol administrador';
   });
 
-  await t('POST /api/users rol administrador rechazado -> 400', async () => {
-    const r = await api('POST', '/api/users', { token: adminToken, body: { email: `e2e-admin-forbidden-${stamp}@example.com`, password, role: 'administrador' } });
+  await t('POST /api/users rol heredado rechazado -> 400', async () => {
+    const r = await api('POST', '/api/users', { token: adminToken, body: { email: `e2e-legacy-role-${stamp}@example.com`, password, role: 'editor' } });
     expect(r.status === 400, `status ${r.status}`);
     expect(JSON.stringify(r.data.details || r.data).includes('administrador'), r.data?.error || '');
   });
@@ -249,15 +258,13 @@ try {
   });
 
   await t('POST /api/users email duplicado -> 409', async () => {
-    const r = await api('POST', '/api/users', { token: adminToken, body: { email: editorEmail, password, role: 'editor' } });
+    const r = await api('POST', '/api/users', { token: adminToken, body: { email: editorEmail, password } });
     expect(r.status === 409, `status ${r.status}`);
   });
 
-  await t('PATCH usuario cambia rol editor->consulta->editor -> 200', async () => {
+  await t('PATCH usuario rechaza roles heredados -> 400', async () => {
     const a = await api('PATCH', `/api/users/${editorId}`, { token: adminToken, body: { role: 'consulta' } });
-    expect(a.status === 200 && a.data.user.role === 'consulta', `paso1 status ${a.status} rol ${a.data?.user?.role}`);
-    const b = await api('PATCH', `/api/users/${editorId}`, { token: adminToken, body: { role: 'editor' } });
-    expect(b.status === 200 && b.data.user.role === 'editor', `paso2 status ${b.status} rol ${b.data?.user?.role}`);
+    expect(a.status === 400, `status ${a.status}`);
   });
 
   await t('PATCH desactivar usuario -> 200 active false', async () => {
@@ -283,24 +290,19 @@ try {
     viewerToken = viewerLogin.data.session.access_token;
   });
 
-  await t('editor no puede consultar usuarios -> 403', async () => {
+  await t('cualquier administrador puede consultar usuarios -> 200', async () => {
     const r = await api('GET', '/api/users', { token: editorToken });
-    expect(r.status === 403, `status ${r.status}`);
+    expect(r.status === 200, `status ${r.status}`);
   });
 
-  await t('consulta no puede consultar usuarios -> 403', async () => {
-    const r = await api('GET', '/api/users', { token: viewerToken });
-    expect(r.status === 403, `status ${r.status}`);
-  });
-
-  await t('editor no puede cambiar roles -> 403', async () => {
+  await t('actualización rechaza roles heredados -> 400', async () => {
     const r = await api('PATCH', `/api/users/${viewerId}`, { token: editorToken, body: { role: 'editor' } });
-    expect(r.status === 403, `status ${r.status}`);
+    expect(r.status === 400, `status ${r.status}`);
   });
 
-  await t('PATCH usuario con rol administrador desde panel -> 400', async () => {
+  await t('PATCH conserva el único rol administrador -> 200', async () => {
     const r = await api('PATCH', `/api/users/${viewerId}`, { token: adminToken, body: { role: 'administrador' } });
-    expect(r.status === 400, `status ${r.status}`);
+    expect(r.status === 200 && r.data.user.role === 'administrador', `status ${r.status}`);
   });
 
   await t('GET /api/categories sin token -> 401', async () => {
@@ -329,9 +331,9 @@ try {
     expect(r.status === 400, `status ${r.status}`);
   });
 
-  await t('consulta no puede crear categorias -> 403', async () => {
-    const r = await api('POST', '/api/categories', { token: viewerToken, body: { name: 'Otra' } });
-    expect(r.status === 403, `status ${r.status}`);
+  await t('crear categorias sin token -> 401', async () => {
+    const r = await api('POST', '/api/categories', { body: { name: 'Otra' } });
+    expect(r.status === 401, `status ${r.status}`);
   });
 
   await t('editor puede editar categorias -> 200', async () => {
@@ -392,14 +394,14 @@ try {
     expect(r.data.product.id === productId, 'id distinto');
   });
 
-  await t('consulta no puede listar productos del panel -> 403', async () => {
-    const r = await api('GET', '/api/products', { token: viewerToken });
-    expect(r.status === 403, `status ${r.status}`);
+  await t('listar productos del panel sin token -> 401', async () => {
+    const r = await api('GET', '/api/products');
+    expect(r.status === 401, `status ${r.status}`);
   });
 
-  await t('consulta no puede editar productos -> 403', async () => {
-    const r = await api('PATCH', `/api/products/${productSlug}`, { token: viewerToken, body: { name: 'Hack' } });
-    expect(r.status === 403, `status ${r.status}`);
+  await t('editar productos sin token -> 401', async () => {
+    const r = await api('PATCH', `/api/products/${productSlug}`, { body: { name: 'Hack' } });
+    expect(r.status === 401, `status ${r.status}`);
   });
 
   await t('PATCH precios (editor) -> 200 valores numericos', async () => {
@@ -442,9 +444,9 @@ try {
     expect(r.status === 404, `status ${r.status}`);
   });
 
-  await t('editor no puede eliminar productos -> 403', async () => {
-    const r = await api('DELETE', `/api/products/${productSlug}`, { token: editorToken });
-    expect(r.status === 403, `status ${r.status}`);
+  await t('eliminar productos sin autenticación -> 401', async () => {
+    const r = await api('DELETE', `/api/products/${productSlug}`);
+    expect(r.status === 401, `status ${r.status}`);
   });
 
   await t('upload-url sin token -> 401', async () => {
@@ -587,9 +589,9 @@ try {
     return `${p.images.length} imagenes firmadas`;
   });
 
-  await t('consulta cierra sesion y consulta su perfil -> 200 rol consulta', async () => {
+  await t('administrador adicional cierra sesion y consulta su perfil -> 200', async () => {
     const me = await api('GET', '/api/auth/me', { token: viewerToken });
-    expect(me.status === 200 && me.data.profile.role === 'consulta', `status ${me.status}`);
+    expect(me.status === 200 && me.data.profile.role === 'administrador', `status ${me.status}`);
     const out = await api('POST', '/api/auth/logout', { token: viewerToken });
     expect(out.status === 200, `logout ${out.status}`);
   });

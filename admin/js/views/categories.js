@@ -18,7 +18,7 @@ let items = [];
 let query = '';
 
 function canWrite() {
-  return ['administrador', 'editor'].includes(state.profile?.role);
+  return state.profile?.role === 'administrador';
 }
 
 function slugify(value) {

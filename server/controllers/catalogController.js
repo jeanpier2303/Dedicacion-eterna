@@ -1,4 +1,5 @@
 import { methodNotAllowed, notFound } from '../http.js';
+import { qp } from '../validations/common.js';
 import * as catalogService from '../services/catalogService.js';
 
 export async function categories(req, res) {
@@ -15,7 +16,7 @@ export async function products(req, res) {
 
 export async function productBySlug(req, res) {
   if (req.method !== 'GET') return methodNotAllowed(res, ['GET']);
-  const slug = req.query?.slug;
+  const slug = qp(req.query?.slug);
   if (!slug) return notFound(res, 'Producto no encontrado');
   const product = await catalogService.productBySlug(slug);
   res.status(200).json({ product });

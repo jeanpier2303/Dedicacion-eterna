@@ -6,14 +6,14 @@ import { qp } from '../validations/common.js';
 
 export async function list(req, res) {
   if (req.method !== 'GET') return methodNotAllowed(res, ['GET']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const media = await mediaService.listForProduct(qp(req.query?.id));
   res.status(200).json({ media });
 }
 
 export async function createUploadUrl(req, res) {
   if (req.method !== 'POST') return methodNotAllowed(res, ['POST']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const result = validateUploadRequest(req.body);
   if (result.errors) return badRequest(res, result.errors);
   const upload = await mediaService.createUploadUrl(qp(req.query?.id), result.data);
@@ -22,7 +22,7 @@ export async function createUploadUrl(req, res) {
 
 export async function register(req, res) {
   if (req.method !== 'POST') return methodNotAllowed(res, ['POST']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const result = validateMediaRegister(req.body);
   if (result.errors) return badRequest(res, result.errors);
   const media = await mediaService.register(qp(req.query?.id), result.data);
@@ -31,7 +31,7 @@ export async function register(req, res) {
 
 export async function patch(req, res) {
   if (req.method !== 'PATCH') return methodNotAllowed(res, ['PATCH']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const id = qp(req.query?.id);
   if (!id) return notFound(res, 'Archivo no encontrado');
   const result = validateMediaPatch(req.body);
@@ -42,7 +42,7 @@ export async function patch(req, res) {
 
 export async function remove(req, res) {
   if (req.method !== 'DELETE') return methodNotAllowed(res, ['DELETE']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const id = qp(req.query?.id);
   if (!id) return notFound(res, 'Archivo no encontrado');
   const result = await mediaService.remove(id);

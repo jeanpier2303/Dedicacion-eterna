@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    { "source": "/api/auth/login", "destination": "/api/handlers/auth?resource=login" },
+    { "source": "/api/auth/logout", "destination": "/api/handlers/auth?resource=logout" },
+    { "source": "/api/auth/refresh", "destination": "/api/handlers/auth?resource=refresh" },
+    { "source": "/api/auth/me", "destination": "/api/handlers/auth?resource=me" },
+    { "source": "/api/catalog/categories", "destination": "/api/handlers/catalog?resource=categories" },
+    { "source": "/api/catalog/products", "destination": "/api/handlers/catalog?resource=products" },
+    { "source": "/api/catalog/products/:slug", "destination": "/api/handlers/catalog?resource=product&slug=:slug" },
+    { "source": "/api/categories", "destination": "/api/handlers/categories?resource=collection" },
+    { "source": "/api/categories/:id", "destination": "/api/handlers/categories?resource=item&id=:id" },
+    { "source": "/api/products", "destination": "/api/handlers/products?resource=collection" },
+    { "source": "/api/products/:id/media", "destination": "/api/handlers/products?resource=media&id=:id" },
+    { "source": "/api/products/:id/upload-url", "destination": "/api/handlers/products?resource=upload-url&id=:id" },
+    { "source": "/api/products/:id", "destination": "/api/handlers/products?resource=item&id=:id" },
+    { "source": "/api/media/:id", "destination": "/api/handlers/media?resource=item&id=:id" },
+    { "source": "/api/users", "destination": "/api/handlers/users?resource=collection" },
+    { "source": "/api/users/:id", "destination": "/api/handlers/users?resource=item&id=:id" }
+  ]
+}

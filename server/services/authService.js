@@ -43,6 +43,7 @@ export async function login({ email, password }) {
     .eq('id', data.user.id)
     .maybeSingle();
   if (profileError) throw profileError;
+  if (profile?.role !== 'administrador') throw new HttpError(403, 'Esta cuenta no tiene acceso al panel');
   return {
     session: sessionPayload(data.session),
     user: userPayload(data.user),

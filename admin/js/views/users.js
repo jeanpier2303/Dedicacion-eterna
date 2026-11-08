@@ -1,4 +1,5 @@
 import { api } from '../api.js';
+import { state } from '../state.js';
 import {
   escapeHtml,
   formatDate,
@@ -16,11 +17,6 @@ import {
 let container;
 let users = [];
 
-const ROLE_OPTIONS = [
-  { value: 'editor', label: 'Editor' },
-  { value: 'consulta', label: 'Consulta' },
-];
-
 function renderTable() {
   const wrap = container.querySelector('#users-table');
   if (!wrap) return;
@@ -34,7 +30,6 @@ function renderTable() {
     </tr></thead>
     <tbody>${users
       .map((u) => {
-        const currentRole = ['editor', 'consulta'].includes(u.role) ? u.role : '';
         return `<tr data-id="${u.id}">
       <td><div class="cell-title">
         <span class="user-avatar">${escapeHtml((u.full_name || u.email).charAt(0).toUpperCase())}</span>
@@ -42,11 +37,9 @@ function renderTable() {
       </div></td>
       <td>
         ${
-          currentRole
-            ? `<select class="role-select" data-role-select>
-            ${ROLE_OPTIONS.map((r) => `<option value="${r.value}" ${u.role === r.value ? 'selected' : ''}>${r.label}</option>`).join('')}
-          </select>`
-            : '<span class="badge badge-gold">Administrador</span>'
+          u.role === 'administrador'
+            ? '<span class="badge badge-gold">Administrador</span>'
+            : '<span class="badge badge-muted">Sin acceso al panel</span>'
         }
       </td>
       <td><span class="badge ${u.active ? 'badge-success' : 'badge-danger'}">${u.active ? 'Activo' : 'Desactivado'}</span></td>
@@ -54,9 +47,11 @@ function renderTable() {
       <td>${escapeHtml(formatDate(u.created_at))}</td>
       <td><div class="row-actions">
         ${
-          u.active
-            ? `<button class="icon-btn danger" data-action="deactivate" aria-label="Desactivar ${escapeHtml(u.email)}"><i class="fa-solid fa-user-slash"></i></button>`
-            : `<button class="icon-btn" data-action="activate" aria-label="Reactivar ${escapeHtml(u.email)}"><i class="fa-solid fa-user-check"></i></button>`
+          u.id === state.user?.id
+            ? '<span class="muted">Cuenta actual</span>'
+            : u.active
+              ? `<button class="icon-btn danger" data-action="deactivate" aria-label="Desactivar ${escapeHtml(u.email)}"><i class="fa-solid fa-user-slash"></i></button>`
+              : `<button class="icon-btn" data-action="activate" aria-label="Reactivar ${escapeHtml(u.email)}"><i class="fa-solid fa-user-check"></i></button>`
         }
       </div></td></tr>`;
       })
@@ -64,19 +59,6 @@ function renderTable() {
 
   wrap.querySelectorAll('tr[data-id]').forEach((row) => {
     const user = users.find((u) => u.id === row.dataset.id);
-    row.querySelector('[data-role-select]')?.addEventListener('change', async (event) => {
-      const select = event.target;
-      select.disabled = true;
-      try {
-        await api('PATCH', `/api/users/${user.id}`, { role: select.value });
-        toast('success', `Rol actualizado a ${select.value}`);
-        await load();
-      } catch (err) {
-        toast('error', err.message);
-        select.value = user.role;
-        select.disabled = false;
-      }
-    });
     row.querySelector('[data-action]')?.addEventListener('click', async (event) => {
       const btn = event.currentTarget;
       const deactivate = btn.dataset.action === 'deactivate';
@@ -123,13 +105,7 @@ function openForm() {
       </div>
       <span class="field-error"></span>
     </div>
-    <div class="field">
-      <label for="u-role">Rol *</label>
-      <select id="u-role" required>
-        ${ROLE_OPTIONS.map((r) => `<option value="${r.value}">${r.label}</option>`).join('')}
-      </select>
-      <span class="muted">El panel solo asigna roles editor y consulta. Los administradores se crean desde Supabase.</span>
-    </div>`;
+    <p class="muted">La cuenta recibirá acceso de administrador al panel.</p>`;
 
   const email = form.querySelector('#u-email');
   const password = form.querySelector('#u-password');
@@ -182,7 +158,6 @@ function openForm() {
         email: emailValue,
         password: password.value,
         full_name: form.querySelector('#u-name').value.trim() || null,
-        role: form.querySelector('#u-role').value,
       });
       closeModal();
       toast('success', 'Usuario creado');

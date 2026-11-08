@@ -1,6 +1,7 @@
 import { methodNotAllowed, badRequest } from '../http.js';
 import { requireAuth } from '../auth/guard.js';
 import * as categoryService from '../services/categoryService.js';
+import { qp } from '../validations/common.js';
 import { validateCategory } from '../validations/categories.js';
 
 export async function list(req, res) {
@@ -12,7 +13,7 @@ export async function list(req, res) {
 
 export async function create(req, res) {
   if (req.method !== 'POST') return methodNotAllowed(res, ['POST']);
-  await requireAuth(req, 'editor');
+  await requireAuth(req);
   const result = validateCategory(req.body);
   if (result.errors) return badRequest(res, result.errors);
   const category = await categoryService.create(result.data);
@@ -21,8 +22,8 @@ export async function create(req, res) {
 
 export async function update(req, res) {
   if (req.method !== 'PATCH') return methodNotAllowed(res, ['PATCH']);
-  await requireAuth(req, 'editor');
-  const id = req.query?.id;
+  await requireAuth(req);
+  const id = qp(req.query?.id);
   const result = validateCategory(req.body, { partial: true });
   if (result.errors) return badRequest(res, result.errors);
   const category = await categoryService.update(id, result.data);

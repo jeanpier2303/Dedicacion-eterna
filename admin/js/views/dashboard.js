@@ -18,7 +18,7 @@ function lockedCard(tone, icon, label) {
 
 export async function renderDashboard(container) {
   const name = state.profile?.full_name || state.user?.email || '';
-  const role = state.profile?.role || 'consulta';
+  const role = state.profile?.role || '';
 
   container.innerHTML = `
     <div class="view-header">
@@ -46,7 +46,7 @@ export async function renderDashboard(container) {
     categorias: 'Gestionar categorías',
     usuarios: 'Gestionar usuarios',
   };
-  const roleRoute = { administrador: ['productos', 'categorias', 'usuarios'], editor: ['productos', 'categorias'], consulta: ['categorias'] };
+  const roleRoute = { administrador: ['productos', 'categorias', 'usuarios'] };
   const items = (roleRoute[role] || []).map(
     (key) => `<a class="btn btn-outline" href="#/${key}">${allowed[key]}</a>`
   );

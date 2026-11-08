@@ -21,7 +21,7 @@ let products = [];
 const filters = { q: '', category: '', status: '', featured: '' };
 
 function canWrite() {
-  return ['administrador', 'editor'].includes(state.profile?.role);
+  return state.profile?.role === 'administrador';
 }
 
 function canDelete() {
