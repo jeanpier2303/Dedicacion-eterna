@@ -99,12 +99,6 @@
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="#galeria" class="nav__link">
-                            <i class="fas fa-images nav-icon"></i>
-                            <span>Creaciones</span>
-                        </a>
-                    </li>
-                    <li class="nav__item">
                         <a href="#testimonios" class="nav__link">
                             <i class="fas fa-comment nav-icon"></i>
                             <span>Testimonios</span>
@@ -149,8 +143,6 @@
             <div class="container trend-container">
                 <div class="trend-header">
                     <span class="trend-badge"><span aria-hidden="true">✦</span> Tendencia</span>
-                    <h2 class="trend-title" id="tendencia-title">Velas Personalizadas</h2>
-                    <p class="trend-subtitle">Descubre nuestras velas personalizadas, creadas para convertir momentos especiales en recuerdos únicos.</p>
                 </div>
                 <div class="trend-grid">
                     <div class="trend-media">
@@ -180,9 +172,15 @@
                         </div>
                     </div>
                     <div class="trend-info">
-                        <p class="trend-eyebrow">Producto destacado</p>
-                        <h3 class="trend-product-name">Vela Personalizada</h3>
-                        <p class="trend-desc">Hay deseos que se dicen en voz alta… y otros que se encienden con el corazón. Esta vela de Jesús Nazareno de Magüí Payán puede ser ese pequeño detalle para alguien especial, para acompañar tus oraciones, tus sueños, tus proyectos o aquello que deseas con todo el corazón. Una luz para un deseo, una oración, una esperanza o un momento de gratitud.</p>
+                        <div class="trend-intro">
+                            <h2 class="trend-title" id="tendencia-title">Velas Personalizadas</h2>
+                            <p class="trend-subtitle">Descubre nuestras velas personalizadas, creadas para convertir momentos especiales en recuerdos únicos.</p>
+                        </div>
+                        <div class="trend-detail" id="trend-detail">
+                            <p class="trend-eyebrow">Producto destacado</p>
+                            <h3 class="trend-product-name">Vela Personalizada</h3>
+                            <p class="trend-desc">Hay deseos que se dicen en voz alta… y otros que se encienden con el corazón. Esta vela de Jesús Nazareno de Magüí Payán puede ser ese pequeño detalle para alguien especial, para acompañar tus oraciones, tus sueños, tus proyectos o aquello que deseas con todo el corazón. Una luz para un deseo, una oración, una esperanza o un momento de gratitud.</p>
+                        </div>
                         <div class="trend-actions">
                             <a id="trend-wa" class="button button-primary button-lg" target="_blank" rel="noopener" href="#">
                                 <i class="fab fa-whatsapp button-icon" aria-hidden="true"></i><span>Consultar por WhatsApp</span>
@@ -191,7 +189,7 @@
                                 <i class="fas fa-eye" aria-hidden="true"></i><span>Ver detalles</span>
                             </button>
                         </div>
-                        <p class="trend-note">Toca la foto para ampliar · 3 vistas del mismo producto</p>
+                        <p class="trend-note" id="trend-note">Toca la foto para ampliar · 3 vistas del mismo producto</p>
                     </div>
                 </div>
             </div>
@@ -241,33 +239,6 @@
             </div>
         </section>
 
-        <!-- Sección de Redes Sociales -->
-        <section class="companies-section section" id="redes-sociales" data-aos="fade-up">
-            <div class="container">
-                <div class="section-header">
-                    <p class="social-eyebrow">Síguenos</p>
-                    <h2 class="section-title">Nuestras Redes Sociales</h2>
-                </div>
-
-                <div class="social-row">
-                    <a href="https://www.facebook.com" target="_blank" rel="noopener" class="social-circle facebook" aria-label="Facebook">
-                        <i class="fa-brands fa-facebook-f"></i>
-                    </a>
-                    <a href="https://www.instagram.com" target="_blank" rel="noopener" class="social-circle instagram" aria-label="Instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://www.tiktok.com" target="_blank" rel="noopener" class="social-circle tiktok" aria-label="TikTok">
-                        <i class="fa-brands fa-tiktok"></i>
-                    </a>
-                    <a data-wa="general" class="social-circle whatsapp" aria-label="WhatsApp">
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-
-
         <!-- Catálogo de Productos -->
         <section class="catalog-section section" id="catalogo">
             <div class="container">
@@ -293,30 +264,6 @@
                         <span>Ver más productos</span>
                         <i class="fas fa-arrow-down button-icon"></i>
                     </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Creaciones -->
-        <section class="gallery-section section" id="galeria">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <div class="section-badge">Creaciones</div>
-                    <h2 class="section-title">Algunos de Nuestros Trabajos</h2>
-                    <p class="section-subtitle">
-                        Detalles, materiales y diseños de nuestras creaciones personalizadas
-                    </p>
-                </div>
-                
-                <div class="gallery-filters" data-aos="fade-up" data-aos-delay="100">
-                    <button class="filter-btn active" data-filter="all" aria-pressed="true">Todo</button>
-                    <button class="filter-btn" data-filter="disenos" aria-pressed="false">Diseños</button>
-                    <button class="filter-btn" data-filter="materiales" aria-pressed="false">Materiales</button>
-                    <button class="filter-btn" data-filter="detalles" aria-pressed="false">Detalles</button>
-                </div>
-                
-                <div class="gallery-grid" id="gallery-grid">
-                    <!-- Las imágenes se cargan dinámicamente -->
                 </div>
             </div>
         </section>
@@ -384,9 +331,6 @@
                             <a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" title="Instagram">
                                 <i class="fab fa-instagram"></i>
                             </a>
-                            <a href="https://tiktok.com" class="social-link" target="_blank" rel="noopener" title="TikTok">
-                                <i class="fab fa-tiktok"></i>
-                            </a>
                         </div>
                     </div>
 
@@ -443,6 +387,13 @@
 
     <!-- Botones Flotantes -->
     <div class="floating-buttons">
+        <a href="https://tiktok.com" target="_blank" rel="noopener"
+           class="floating-button tiktok-button"
+           data-tooltip="Síguenos en TikTok"
+           title="Síguenos en TikTok"
+           aria-label="Síguenos en TikTok">
+            <i class="fab fa-tiktok" aria-hidden="true"></i>
+        </a>
         <a href="#" data-wa="general"
            class="floating-button whatsapp-button"
            data-tooltip="¿Necesitas ayuda?"
@@ -460,7 +411,9 @@
     <script src="js/products.js" defer></script>
     <script src="js/whatsapp.js" defer></script>
     <script src="js/catalog.js" defer></script>
+    <script src="js/trend-gallery.js" defer></script>
     <script src="js/featured.js" defer></script>
+    <script src="js/hero.js" defer></script>
     <script src="js/app.js" defer></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 // ============================================================
 // catalog.js — Renderizado y filtrado del catálogo
 // ------------------------------------------------------------
-// Lee window.PRODUCTS / CATEGORIES / TESTIMONIALS / GALLERY
+// Lee window.PRODUCTS / CATEGORIES / TESTIMONIALS
 // (js/products.js) y genera todo el HTML automáticamente.
 // Además sincroniza productos y categorías publicados desde el
 // panel administrativo vía /api/catalog (Supabase); los datos
@@ -10,6 +10,11 @@
 // ============================================================
 window.Catalog = (function () {
     'use strict';
+
+    var reduceMotion = false;
+    try {
+        reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (e) {}
 
     var elements = {};
     var activeCategory = 'all';
@@ -53,6 +58,9 @@ window.Catalog = (function () {
             description: p.description || p.short_description || '',
             image: image,
             images: images,
+            // Medios crudos del panel (imágenes y videos) con su
+            // orden de carga; los convierte productMediaList.
+            media: Array.isArray(p.media) ? p.media : [],
             price: (p.price === undefined ? null : p.price),
             oldPrice: (p.old_price === undefined ? null : p.old_price),
             featured: !!p.is_featured
@@ -89,8 +97,21 @@ window.Catalog = (function () {
             .catch(function () { return null; });
     }
 
+    // Avisa a js/featured.js y js/hero.js cuando los productos del
+    // panel ya están en window.PRODUCTS, para que la galería de la
+    // portada se refresque con los medios cargados desde el panel.
+    function markCatalogSynced() {
+        window.CATALOG_SYNCED = true;
+        try {
+            document.dispatchEvent(new CustomEvent('catalog:synced'));
+        } catch (e) {}
+    }
+
     function syncFromApi() {
-        if (typeof fetch !== 'function') return;
+        if (typeof fetch !== 'function') {
+            markCatalogSynced();
+            return;
+        }
         Promise.all([fetchJson(API_PRODUCTS), fetchJson(API_CATEGORIES)])
             .then(function (results) {
                 var data = results[0];
@@ -104,7 +125,9 @@ window.Catalog = (function () {
                 var currentId = productIdFromQuery();
                 var modalOpen = elements.modal && elements.modal.classList.contains('active');
                 if (currentId && !modalOpen) openFromQuery();
-            });
+            })
+            .catch(function () {})
+            .then(markCatalogSynced);
     }
 
     function init() {
@@ -113,8 +136,6 @@ window.Catalog = (function () {
             grid: document.getElementById('products-grid'),
             verMasBtn: document.getElementById('ver-mas-productos'),
             testimonialsContainer: document.getElementById('testimonials-container'),
-            galleryGrid: document.getElementById('gallery-grid'),
-            galleryFilters: document.querySelectorAll('#galeria .filter-btn'),
             modal: document.getElementById('product-modal'),
             modalTitle: document.getElementById('product-modal-title'),
             modalClose: document.getElementById('modal-close'),
@@ -124,7 +145,6 @@ window.Catalog = (function () {
         renderFilters();
         renderProducts();
         loadTestimonios();
-        loadGaleria();
         initModal();
         bindEvents();
         openFromQuery();
@@ -167,14 +187,6 @@ window.Catalog = (function () {
             elements.verMasBtn.addEventListener('click', function () {
                 showAll = true;
                 renderProducts();
-            });
-        }
-
-        if (elements.galleryFilters) {
-            elements.galleryFilters.forEach(function (btn) {
-                btn.addEventListener('click', function (e) {
-                    filterGaleria(e.currentTarget.dataset.filter);
-                });
             });
         }
     }
@@ -271,12 +283,50 @@ window.Catalog = (function () {
         };
     }
 
-    // Galería completa de un producto: usa `images[]` si existe,
-    // si no, una sola imagen. Un solo producto, múltiples vistas.
+    // Medios de un producto (imágenes y videos) en el orden en que
+    // los cargó la administradora: display_order (orden que ella
+    // establezca) y, a igualdad, fecha de carga. Si el producto no
+    // trae medios del panel se usan sus imágenes locales.
+    function productMediaList(product) {
+        var rows = (product && Array.isArray(product.media)) ? product.media : [];
+        var list = rows
+            .map(function (row) {
+                if (!row || !row.signed_url) return null;
+                return {
+                    type: row.media_type === 'video' ? 'video' : 'image',
+                    src: row.signed_url,
+                    order: typeof row.display_order === 'number' ? row.display_order : 0,
+                    created: row.created_at || ''
+                };
+            })
+            .filter(function (entry) { return !!entry; })
+            .sort(function (a, b) {
+                if (a.order !== b.order) return a.order - b.order;
+                return a.created < b.created ? -1 : a.created > b.created ? 1 : 0;
+            })
+            .map(function (entry) { return { type: entry.type, src: entry.src }; });
+        if (list.length) return list;
+        var images = (product && product.images && product.images.length)
+            ? product.images
+            : (product && product.image ? [product.image] : []);
+        return images
+            .filter(function (src) { return !!src; })
+            .map(function (src) { return { type: 'image', src: src }; });
+    }
+
+    // Galería completa de un producto: fotos y videos en el mismo
+    // visor ampliado, en el orden de la galería. Un solo producto,
+    // múltiples vistas.
     function productGalleryItems(product) {
-        var srcs = (product.images && product.images.length) ? product.images : [product.image];
-        return srcs.map(function (src) {
-            return productLightboxItem(product, src);
+        var list = productMediaList(product);
+        if (!list.length) list = [{ type: 'image', src: product.image }];
+        return list.map(function (entry) {
+            var item = productLightboxItem(product, entry.type === 'image' ? entry.src : null);
+            if (entry.type === 'video') {
+                item.video = entry.src;
+                item.image = '';
+            }
+            return item;
         });
     }
 
@@ -415,72 +465,8 @@ window.Catalog = (function () {
         });
     }
 
-    // ---------- Galería ----------
-
-    var currentGalleryFilter = 'all';
-
-    function loadGaleria() {
-        if (!elements.galleryGrid) return;
-        elements.galleryGrid.innerHTML = '';
-        var list = (window.GALLERY || []).filter(function (item) {
-            return currentGalleryFilter === 'all' || item.category === currentGalleryFilter;
-        });
-        if (list.length === 0) {
-            var empty = document.createElement('div');
-            empty.className = 'empty-state';
-            empty.innerHTML =
-                '<p class="empty-state-text">Próximamente encontrarás aquí nuevas creaciones personalizadas.</p>' +
-                '<p class="empty-state-sub">Estamos preparando nuevas creaciones para esta categoría.</p>' +
-                '<a class="button button-primary" target="_blank" rel="noopener" href="' +
-                window.WhatsApp.generalLink() + '"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>';
-            elements.galleryGrid.appendChild(empty);
-            return;
-        }
-        list.forEach(function (item) {
-            elements.galleryGrid.appendChild(createGalleryItem(item));
-        });
-    }
-
-    function createGalleryItem(item) {
-        var div = document.createElement('div');
-        div.className = 'gallery-item';
-        div.dataset.category = item.category;
-        div.innerHTML =
-            '<div class="gallery-image-container">' +
-                '<img src="' + item.image + '" alt="' + item.title + '" loading="lazy">' +
-                '<div class="gallery-overlay">' +
-                    '<h4>' + item.title + '</h4>' +
-                    '<p>' + item.description + '</p>' +
-                    '<button class="gallery-view-button" aria-label="Ampliar ' + item.title + '">' +
-                        '<i class="fas fa-search-plus"></i>' +
-                    '</button>' +
-                '</div>' +
-            '</div>';
-        div.addEventListener('click', function () { openLightbox(item); });
-        return div;
-    }
-
-    function filterGaleria(filter) {
-        currentGalleryFilter = filter;
-        if (elements.galleryFilters) {
-            elements.galleryFilters.forEach(function (btn) {
-                var isActive = btn.dataset.filter === filter;
-                btn.classList.toggle('active', isActive);
-                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-            });
-        }
-        if (!elements.galleryGrid) return;
-        elements.galleryGrid.classList.add('filtering');
-        setTimeout(function () {
-            loadGaleria();
-            setTimeout(function () {
-                elements.galleryGrid.classList.remove('filtering');
-            }, 50);
-        }, 300);
-    }
-
     // Lightbox único de la página. Acepta:
-    //  openLightbox(item) -> una sola imagen (galería, catálogo simple)
+    //  openLightbox(item) -> un solo medio
     //  openLightbox(item, itemsArray, startIndex) -> galería navegable
     //  openLightbox(itemsArray, startIndex) -> atajo para galerías
     function openLightbox(item, galleryItems, startIndex) {
@@ -509,25 +495,43 @@ window.Catalog = (function () {
         lightbox.innerHTML =
             '<div class="lightbox-content">' +
                 '<button class="lightbox-close" aria-label="Cerrar vista ampliada">&times;</button>' +
-                (hasNav ? '<button class="lightbox-nav lightbox-prev" aria-label="Imagen anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>' : '') +
-                (hasNav ? '<button class="lightbox-nav lightbox-next" aria-label="Imagen siguiente"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>' : '') +
-                '<div class="lightbox-image-container"><img src="' + items[current].image + '" alt="' + (items[current].title || '') + '"></div>' +
-                (hasNav ? '<p class="lightbox-counter" aria-live="polite">' + (current + 1) + ' / ' + items.length + '</p>' : '') +
+                '<div class="lightbox-media">' +
+                    (hasNav ? '<button class="lightbox-nav lightbox-prev" aria-label="Imagen anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>' : '') +
+                    (hasNav ? '<button class="lightbox-nav lightbox-next" aria-label="Imagen siguiente"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>' : '') +
+                    '<div class="lightbox-image-container"></div>' +
+                    (hasNav ? '<p class="lightbox-counter" aria-live="polite">' + (current + 1) + ' / ' + items.length + '</p>' : '') +
+                '</div>' +
                 '<div class="lightbox-info"><h3>' + (items[current].title || '') + '</h3><p>' + (items[current].description || '') + '</p></div>' +
             '</div>';
 
         document.body.appendChild(lightbox);
         document.body.style.overflow = 'hidden';
 
-        var imgEl = lightbox.querySelector('.lightbox-image-container img');
+        var mediaEl = lightbox.querySelector('.lightbox-image-container');
         var counterEl = lightbox.querySelector('.lightbox-counter');
         var infoTitle = lightbox.querySelector('.lightbox-info h3');
         var infoDesc = lightbox.querySelector('.lightbox-info p');
 
+        // Foto o video en el mismo marco ampliado. Los videos llevan
+        // controles (con pantalla completa); al cambiar de medio se
+        // detiene el video que estuviera reproduciéndose.
+        function renderMedia() {
+            var it = items[current];
+            var playing = mediaEl.querySelector('video');
+            if (playing) playing.pause();
+            if (it.video) {
+                mediaEl.innerHTML =
+                    '<video src="' + it.video + '" controls playsinline muted' +
+                    (reduceMotion ? '' : ' autoplay') +
+                    ' loop preload="metadata" aria-label="' + (it.title || 'Video') + '"></video>';
+            } else {
+                mediaEl.innerHTML = '<img src="' + (it.image || '') + '" alt="' + (it.title || '') + '">';
+            }
+        }
+
         function render() {
             var it = items[current];
-            imgEl.setAttribute('src', it.image);
-            imgEl.setAttribute('alt', it.title || '');
+            renderMedia();
             lightbox.setAttribute('aria-label', it.title || 'Vista ampliada');
             if (counterEl) counterEl.textContent = (current + 1) + ' / ' + items.length;
             if (infoTitle) infoTitle.textContent = it.title || '';
@@ -545,6 +549,8 @@ window.Catalog = (function () {
         var closeLightbox = function () {
             if (closed) return;
             closed = true;
+            var playing = mediaEl.querySelector('video');
+            if (playing) playing.pause();
             document.removeEventListener('keydown', keyHandler);
             lightbox.classList.add('fade-out');
             setTimeout(function () {
@@ -569,18 +575,33 @@ window.Catalog = (function () {
         if (hasNav) {
             lightbox.querySelector('.lightbox-prev').addEventListener('click', function (e) { e.stopPropagation(); goPrev(); });
             lightbox.querySelector('.lightbox-next').addEventListener('click', function (e) { e.stopPropagation(); goNext(); });
-            // Swipe en móvil.
+            // Swipe en móvil (no mientras se toca un video: sus
+            // controles se desplazan en horizontal).
             var startX = null;
+            var startY = null;
             lightbox.querySelector('.lightbox-image-container').addEventListener('touchstart', function (e) {
-                if (e.touches && e.touches.length === 1) startX = e.touches[0].clientX;
+                if (e.touches && e.touches.length === 1 && !(e.target.closest && e.target.closest('video'))) {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                } else {
+                    startX = null;
+                    startY = null;
+                }
             }, { passive: true });
             lightbox.querySelector('.lightbox-image-container').addEventListener('touchend', function (e) {
                 if (startX === null) return;
                 var dx = e.changedTouches[0].clientX - startX;
-                if (Math.abs(dx) > 30) { dx > 0 ? goPrev() : goNext(); }
+                var dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy)) { dx > 0 ? goPrev() : goNext(); }
                 startX = null;
+                startY = null;
+            }, { passive: true });
+            lightbox.querySelector('.lightbox-image-container').addEventListener('touchcancel', function () {
+                startX = null;
+                startY = null;
             }, { passive: true });
         }
+        render();
         lightbox.querySelector('.lightbox-close').focus();
     }
 
@@ -616,11 +637,11 @@ window.Catalog = (function () {
         notify: notify,
         openProductDetail: openProductDetail,
         closeModal: closeModal,
-        filterGaleria: filterGaleria,
         openLightbox: openLightbox,
         openGallery: openGallery,
         openProductGallery: openProductGallery,
         productGalleryItems: productGalleryItems,
+        productMedia: productMediaList,
         findProduct: findProduct
     };
 })();

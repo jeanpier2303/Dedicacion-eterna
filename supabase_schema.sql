@@ -74,6 +74,46 @@ comment on column public.product_media.product_id is
      Los ARCHIVOS de Storage los borra el backend (sección 8).';
 
 
+create table if not exists public.home_hero (
+    id           smallint primary key default 1 check (id = 1),
+    title        text not null default '',
+    description  text not null default '',
+    button_label text not null default '',
+    button_href  text not null default '',
+    media_type   text not null default 'image' check (media_type in ('image', 'video')),
+    image_path   text,
+    video_path   text,
+    is_published boolean not null default false,
+    starts_at    timestamptz,
+    ends_at      timestamptz,
+    updated_at   timestamptz not null default now(),
+    constraint home_hero_dates_order check (starts_at is null or ends_at is null or ends_at > starts_at)
+);
+
+comment on table public.home_hero is
+    'Única portada principal del sitio: una sola fila (id = 1) y un solo estado publicado.';
+comment on column public.home_hero.image_path is
+    'Ruta en el bucket product-images. También sirve de póster del video.';
+comment on column public.home_hero.video_path is
+    'Ruta en el bucket product-videos. Se reproduce en silencio con la imagen como respaldo.';
+
+create table if not exists public.home_hero_media (
+    id            uuid primary key default gen_random_uuid(),
+    hero_id       smallint not null default 1 references public.home_hero (id) on delete cascade,
+    media_type    text not null check (media_type in ('image', 'video')),
+    storage_path  text not null,
+    alt_text      text,
+    display_order integer not null default 0,
+    created_at    timestamptz not null default now(),
+    constraint home_hero_media_unique_path unique (hero_id, storage_path)
+);
+
+comment on table public.home_hero_media is
+    'Galería propia de la portada principal: múltiples fotos y videos con orden de visualización. El primero de la lista es el medio principal inicial.';
+comment on column public.home_hero_media.storage_path is
+    'Ruta en el bucket product-images (fotos) o product-videos (videos), carpeta hero/.';
+
+
 -- ============================================================
 -- 2. FUNCIONES AUXILIARES
 -- ============================================================
@@ -244,6 +284,11 @@ create trigger products_updated_at
     before update on public.products
     for each row execute function public.set_updated_at();
 
+drop trigger if exists home_hero_updated_at on public.home_hero;
+create trigger home_hero_updated_at
+    before update on public.home_hero
+    for each row execute function public.set_updated_at();
+
 
 -- ============================================================
 -- 4. ÍNDICES
@@ -254,6 +299,8 @@ create index if not exists products_public_listing_idx
     on public.products (is_published, is_featured, display_order);
 create index if not exists product_media_gallery_idx
     on public.product_media (product_id, display_order);
+create index if not exists home_hero_media_hero_idx
+    on public.home_hero_media (hero_id, display_order, created_at);
 
 -- Una sola imagen principal por producto
 create unique index if not exists product_media_one_primary_idx
@@ -268,6 +315,8 @@ alter table public.profiles     enable row level security;
 alter table public.categories   enable row level security;
 alter table public.products     enable row level security;
 alter table public.product_media enable row level security;
+alter table public.home_hero    enable row level security;
+alter table public.home_hero_media enable row level security;
 
 -- ------------------------------------------------------------
 
@@ -375,6 +424,59 @@ create policy product_media_delete
     using (public.is_admin());
 
 
+-- ------------------------------------------------------------
+-- 5.5 home_hero
+--     · Lectura pública: solo la portada publicada y vigente.
+--       La ventana de fechas se evalúa en el momento de la consulta.
+--     · Escritura: solo el servicio del panel (service_role).
+-- ------------------------------------------------------------
+drop policy if exists home_hero_live_select on public.home_hero;
+create policy home_hero_live_select
+    on public.home_hero for select
+    to anon, authenticated
+    using (
+        is_published
+        and (starts_at is null or starts_at <= now())
+        and (ends_at is null or ends_at > now())
+    );
+
+-- ------------------------------------------------------------
+-- 5.6 home_hero_media
+--     · Lectura pública: solo medios de la portada publicada
+--       y vigente; la ruta no expone el archivo del bucket privado.
+--     · Escritura: solo administradores.
+-- ------------------------------------------------------------
+drop policy if exists home_hero_media_select on public.home_hero_media;
+create policy home_hero_media_select
+    on public.home_hero_media for select
+    using (
+        public.is_admin()
+        or exists (
+            select 1 from public.home_hero h
+            where h.id = home_hero_media.hero_id
+              and h.is_published = true
+              and (h.starts_at is null or h.starts_at <= now())
+              and (h.ends_at is null or h.ends_at > now())
+        )
+    );
+
+drop policy if exists home_hero_media_insert on public.home_hero_media;
+create policy home_hero_media_insert
+    on public.home_hero_media for insert
+    with check (public.is_admin());
+
+drop policy if exists home_hero_media_update on public.home_hero_media;
+create policy home_hero_media_update
+    on public.home_hero_media for update
+    using (public.is_admin())
+    with check (public.is_admin());
+
+drop policy if exists home_hero_media_delete on public.home_hero_media;
+create policy home_hero_media_delete
+    on public.home_hero_media for delete
+    using (public.is_admin());
+
+
 -- ============================================================
 -- 6. DATOS INICIALES — categorías actuales del catálogo
 --     Origen: window.CATEGORIES (js/products.js)
@@ -394,6 +496,11 @@ values
     ('Papelería',    'papeleria',    true),
     ('Otros',        'otros',        true)
 on conflict (slug) do nothing;
+
+
+insert into public.home_hero (id)
+values (1)
+on conflict (id) do nothing;
 
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
@@ -463,4 +570,3 @@ create policy "product_media_staff_delete"
     );
 
 drop function if exists public.is_editor();
-

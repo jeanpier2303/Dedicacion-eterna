@@ -187,10 +187,20 @@ var app = {
         // su href de WhatsApp y no deben ser interceptados).
         document.querySelectorAll('a[href^="#"]:not([data-wa])').forEach(function (anchor) {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
                 var targetId = this.getAttribute('href');
-                if (!targetId || targetId === '#') return;
-                var targetElement = document.querySelector(targetId);
+                if (!targetId || targetId === '#') {
+                    e.preventDefault();
+                    return;
+                }
+                if (targetId.charAt(0) !== '#') return;
+                var targetElement = null;
+                try {
+                    targetElement = document.querySelector(targetId);
+                } catch (err) {
+                    e.preventDefault();
+                    return;
+                }
+                e.preventDefault();
                 if (targetElement) {
                     window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
                 }
@@ -255,7 +265,7 @@ var app = {
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-        document.querySelectorAll('.product-card, .testimonial-card, .gallery-item, .section-header').forEach(function (el) {
+        document.querySelectorAll('.product-card, .testimonial-card, .section-header').forEach(function (el) {
             observer.observe(el);
         });
     }

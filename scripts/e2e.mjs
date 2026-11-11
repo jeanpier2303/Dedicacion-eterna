@@ -130,6 +130,9 @@ let image2 = null;
 let video = null;
 let videoPath = null;
 let folder = null;
+let originalHero = null;
+let heroUploadPath = null;
+let heroUploadToken = null;
 
 try {
   console.log(`Base: ${BASE}\n`);
@@ -226,6 +229,24 @@ try {
     expect(r.status === 200, `status ${r.status}`);
     expect(Array.isArray(r.data.users) && r.data.users.length >= 1, 'lista vacia');
     return `${r.data.users.length} usuarios`;
+  });
+
+  await t('GET /api/catalog/hero publico -> 200 con clave hero', async () => {
+    const r = await api('GET', '/api/catalog/hero');
+    expect(r.status === 200, `status ${r.status}: ${r.data?.error || ''}`);
+    expect('hero' in r.data, 'sin clave hero');
+  });
+
+  await t('GET /api/hero sin token -> 401', async () => {
+    const r = await api('GET', '/api/hero');
+    expect(r.status === 401, `status ${r.status}`);
+  });
+
+  await t('GET /api/hero (admin) -> 200 y captura el estado original', async () => {
+    const r = await api('GET', '/api/hero', { token: adminToken });
+    expect(r.status === 200, `status ${r.status}: ${r.data?.error || ''}`);
+    originalHero = r.data.hero;
+    return `publicada ${originalHero.is_published}`;
   });
 
   await t('POST /api/users crea administrador -> 201', async () => {
@@ -589,6 +610,81 @@ try {
     return `${p.images.length} imagenes firmadas`;
   });
 
+  await t('PATCH hero publica la portada -> 200', async () => {
+    const r = await api('PATCH', '/api/hero', {
+      token: adminToken,
+      body: {
+        title: 'Portada E2E',
+        description: 'Descripcion de prueba e2e',
+        button_label: 'Ver catálogo',
+        button_href: '#catalogo',
+        media_type: 'image',
+        is_published: true,
+        starts_at: null,
+        ends_at: null,
+      },
+    });
+    expect(r.status === 200, `status ${r.status}: ${r.data?.error || ''}`);
+    expect(r.data.hero.is_published === true, 'no publicada');
+    expect(r.data.hero.title === 'Portada E2E', `titulo ${r.data.hero.title}`);
+  });
+
+  await t('catalogo publico entrega la portada publicada', async () => {
+    const r = await api('GET', '/api/catalog/hero');
+    expect(r.status === 200, `status ${r.status}`);
+    expect(r.data.hero && r.data.hero.title === 'Portada E2E', 'portada no visible');
+  });
+
+  await t('PATCH hero rechaza enlace inseguro -> 400', async () => {
+    const r = await api('PATCH', '/api/hero', { token: adminToken, body: { button_href: 'javascript:alert(1)' } });
+    expect(r.status === 400, `status ${r.status}`);
+  });
+
+  await t('PATCH hero rechaza fechas invertidas -> 400', async () => {
+    const r = await api('PATCH', '/api/hero', {
+      token: adminToken,
+      body: { starts_at: '2027-01-02T00:00:00.000Z', ends_at: '2027-01-01T00:00:00.000Z' },
+    });
+    expect(r.status === 400, `status ${r.status}`);
+  });
+
+  await t('upload-url hero sin token -> 401', async () => {
+    const r = await api('POST', '/api/hero/upload-url', { body: { filename: 'portada.png', media_type: 'image' } });
+    expect(r.status === 401, `status ${r.status}`);
+  });
+
+  await t('upload-url hero con imagen valida -> 201', async () => {
+    const r = await api('POST', '/api/hero/upload-url', { token: adminToken, body: { filename: 'portada-e2e.png', media_type: 'image', size: PNG.length } });
+    expect(r.status === 201, `status ${r.status}: ${r.data?.error || ''}`);
+    expect(r.data.path.startsWith('hero/'), r.data.path);
+    heroUploadPath = r.data.path;
+    heroUploadToken = r.data.token;
+    track.storageRefs.push({ bucket: r.data.bucket, path: r.data.path });
+    return r.data.path;
+  });
+
+  await t('PATCH hero guarda la imagen subida -> 200 con URL firmada', async () => {
+    currentUploadToken = heroUploadToken;
+    await uploadFile(heroUploadPath, PNG, 'portada-e2e.png', 'image/png');
+    expect(await storageHas('product-images', 'hero', heroUploadPath.split('/').pop()), 'archivo no esta en el bucket');
+    const r = await api('PATCH', '/api/hero', { token: adminToken, body: { image_path: heroUploadPath } });
+    expect(r.status === 200, `status ${r.status}: ${r.data?.error || ''}`);
+    expect(r.data.hero.image_path === heroUploadPath, `path ${r.data.hero.image_path}`);
+    expect(typeof r.data.hero.image_url === 'string' && r.data.hero.image_url.includes('token='), 'sin image_url');
+  });
+
+  await t('PATCH hero rechaza ruta no subida -> 400', async () => {
+    const r = await api('PATCH', '/api/hero', { token: adminToken, body: { image_path: 'hero/no-existe-archivo.png' } });
+    expect(r.status === 400, `status ${r.status}`);
+  });
+
+  await t('PATCH hero despublica -> 200 y el catalogo vuelve a null', async () => {
+    const r = await api('PATCH', '/api/hero', { token: adminToken, body: { is_published: false } });
+    expect(r.status === 200 && r.data.hero.is_published === false, `status ${r.status}`);
+    const pub = await api('GET', '/api/catalog/hero');
+    expect(pub.status === 200 && pub.data.hero === null, 'sigue visible en el catalogo');
+  });
+
   await t('administrador adicional cierra sesion y consulta su perfil -> 200', async () => {
     const me = await api('GET', '/api/auth/me', { token: viewerToken });
     expect(me.status === 200 && me.data.profile.role === 'administrador', `status ${me.status}`);
@@ -630,6 +726,29 @@ for (const r of results) {
 const passed = results.filter((r) => r.ok).length;
 const failed = results.filter((r) => !r.ok).length;
 console.log(`\nTOTAL: ${passed} PASS / ${failed} FAIL`);
+
+if (originalHero && adminToken) {
+  try {
+    const restored = await api('PATCH', '/api/hero', {
+      token: adminToken,
+      body: {
+        title: originalHero.title,
+        description: originalHero.description,
+        button_label: originalHero.button_label,
+        button_href: originalHero.button_href,
+        media_type: originalHero.media_type,
+        image_path: originalHero.image_path,
+        video_path: originalHero.video_path,
+        is_published: originalHero.is_published,
+        starts_at: originalHero.starts_at,
+        ends_at: originalHero.ends_at,
+      },
+    });
+    console.log(restored.status === 200 ? 'Portada original restaurada.' : `No se pudo restaurar la portada: status ${restored.status}`);
+  } catch (e) {
+    console.log(`No se pudo restaurar la portada original: ${e.message}`);
+  }
+}
 
 await cleanup();
 console.log('Limpieza completada: usuarios, categorias, productos y archivos temporales eliminados.');

@@ -3,25 +3,28 @@ import { api } from './api.js';
 import { toast, setLoading, loadingState, escapeHtml } from './ui.js';
 import { initLogin } from './views/login.js';
 import { renderDashboard } from './views/dashboard.js';
+import { renderHero } from './views/hero.js';
 import { renderProducts } from './views/products.js';
 import { renderCategories } from './views/categories.js';
 import { renderUsers } from './views/users.js';
 
 const NAV_ITEMS = {
   dashboard: { label: 'Dashboard', icon: 'fa-chart-line' },
+  portada: { label: 'Portada principal', icon: 'fa-image' },
   productos: { label: 'Productos', icon: 'fa-box-open' },
   categorias: { label: 'Categorías', icon: 'fa-tags' },
   usuarios: { label: 'Usuarios', icon: 'fa-users' },
 };
 
 const NAV_SECTIONS = [
-  { title: 'General', keys: ['dashboard'] },
+  { title: 'General', keys: ['dashboard', 'portada'] },
   { title: 'Catálogo', keys: ['productos', 'categorias'] },
   { title: 'Equipo', keys: ['usuarios'] },
 ];
 
 const ROUTES = {
   dashboard: { title: 'Dashboard', roles: ['administrador'], render: renderDashboard },
+  portada: { title: 'Portada principal', roles: ['administrador'], render: renderHero },
   productos: { title: 'Productos', roles: ['administrador'], render: renderProducts },
   categorias: { title: 'Categorías', roles: ['administrador'], render: renderCategories },
   usuarios: { title: 'Usuarios', roles: ['administrador'], render: renderUsers },
